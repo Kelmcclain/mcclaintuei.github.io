@@ -1,0 +1,531 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+
+* {
+    font-size: 12px;
+    color: var(--text-color-light);
+
+}
+
+:root {
+    --primary-color: #191f35;
+    --secondary-color: #262d47;
+    --accent-color: #454c67;
+    --text-color-dark: #2f2e2e;
+    --text-color-light: #cfd7e0;
+
+}
+
+/* scrollbar on the root <html> or <body> element */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+#audio-column::-webkit-scrollbar,
+#incident-column::-webkit-scrollbar,
+#new-incident-column::-webkit-scrollbar,
+textarea::-webkit-scrollbar {
+    width: 8px;
+}
+
+/* Track */
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track,
+#audio-column::-webkit-scrollbar-track,
+#incident-column::-webkit-scrollbar-track,
+#new-incident-column::-webkit-scrollbar-track,
+textarea::-webkit-scrollbar-track {
+    background: var(--secondary-color);
+}
+
+/* Handle */
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb,
+#audio-column::-webkit-scrollbar-thumb,
+#incident-column::-webkit-scrollbar-thumb,
+#new-incident-column::-webkit-scrollbar-thumb,
+textarea::-webkit-scrollbar-thumb {
+    background: rgb(89, 118, 144);
+    border-radius: 6px;
+}
+
+/* Handle on hover */
+html::-webkit-scrollbar-thumb:hover,
+body::-webkit-scrollbar-thumb:hover,
+#audio-column::-webkit-scrollbar-thumb:hover,
+#incident-column::-webkit-scrollbar-thumb:hover,
+#new-incident-column::-webkit-scrollbar-thumb:hover,
+textarea::-webkit-scrollbar-thumb:hover {
+    background: rgb(136, 180, 218);
+}
+
+
+
+body {
+    overflow: hidden;
+    background: var(--primary-color);
+    margin: 0;
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: 300;
+    color: var(--text-color-light);
+
+}
+
+
+#leading {
+    height: 60px;
+    width: 100%;
+    background-color: var(--secondary-color);
+}
+
+#content {
+    display: flex;
+    background: var(--primary-color);
+    font-size: 12px;
+    margin: 0;
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: 300;
+    color: var(--text-color-light);
+}
+
+#audio-column,
+#incident-column,
+#new-incident-column {
+    display: inline-block;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    background-color: var(--primary-color);
+    height: 100vh;
+}
+
+/* Audio Column Design */
+#audio-column {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    overflow: scroll;
+    width: 20%;
+    max-width: 350px;
+    min-width: 200px;
+    padding: 0px 10px;
+    font-weight: 400;
+    height: 94vh;
+
+}
+
+#clip-files {
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+#audio-column .card {
+    margin: 10px 10px 0px 10px;
+    border-radius: 3px;
+    height: fit-content;
+    width: auto;
+    border: 1px solid rgb(95, 107, 115);
+    background-color: var(--secondary-color);
+    color: var(--text-color-light);
+    position: relative;
+}
+
+#audio-column .card .audio {
+    width: 100%;
+
+}
+
+
+#audio-column .card .talk-group {
+    width: fit-content;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+}
+
+#audio-column .card .duration {
+    width: fit-content;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+
+}
+
+#audio-column .card .precinct {
+    width: fit-content;
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+
+}
+
+#audio-column .card .timestamp {
+    width: fit-content;
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+
+}
+
+/* incident column design */
+#incident-column {
+
+    width: 30%;
+    min-width: 200px;
+    max-width: 550px;
+    height: 90vh;
+    overflow-x: hidden;
+}
+
+.search-bar {
+    margin: 10px 10px 0px 10px;
+    display: inline-flex;
+    align-items: center;
+    width: 95%;
+    background: var(--secondary-color);
+}
+
+.search-bar i {
+    font-size: 24px;
+    padding: 10px ;
+    width: 20%;
+}
+
+.search-bar input {
+    background: var(--accent-color);
+    border: none;
+    padding: 8px;
+    outline: none;
+    color: var(--text-color-light);
+    border-radius: 2px;
+    width: 80%;
+}
+
+#incidents {
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.incident-container {
+    position: relative;
+    background: linear-gradient(45deg, var(--secondary-color), var(--accent-color));
+    margin: 15px 15px 0px 15px;
+    padding: 5px;
+    border-radius: 5px;
+    color: var(--text-color-light);
+    box-shadow: -3px 3px 9px 0px rgb(138 164 255 / 30%);
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+
+}
+
+.incident-container:hover {
+    box-shadow: -3px 3px 9px 0px rgba(255, 255, 255, 0.3);
+
+}
+
+.incident-container.table-row {
+    vertical-align: top;
+}
+
+.incident-container .table-row .title {
+    display: inline-block;
+    font-size: 15px;
+    font-weight: 600;
+    color: rgba(247, 170, 71, 0.774);
+    padding-bottom: 5px;
+}
+
+.incident-container .table-row .caption {
+    display: inline-block;
+    padding-bottom: 10px;
+    color: rgb(190, 204, 216);
+    min-width: 100%;
+}
+
+.incident-container .table-row .address {
+    display: inline-block;
+    padding-bottom: 5px;
+    color: rgb(91, 140, 203);
+}
+
+.incident-container .table-row .time {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+.incident-container .table-row .date {
+    position: absolute;
+    top: 30px;
+    right: 5px;
+    color: rgb(190, 204, 216);
+    ;
+}
+
+.incident-container .table-row .tag-container {
+    max-width: 80%;
+}
+
+.incident-container .table-row .tag-container .tag {
+    display: inline-block;
+    background-color: #454c67;
+    font-size: 12px;
+    padding: 3px;
+    border-radius: 5px;
+    margin-top: 5px;
+    margin-right: 5px;
+    font-weight: bold;
+}
+
+.incident-container .table-row .tag-container .tag:nth-child(1) {
+    color: rgb(197, 194, 194);
+}
+
+.incident-container .table-row .tag-container .tag:nth-child(2) {
+    color: rgb(212, 197, 146);
+}
+
+.incident-container .table-row .tag-container .tag:nth-child(3) {
+    color: rgb(161, 192, 197);
+}
+
+.incident-container .table-row .tag-container .tag:nth-child(4) {
+    color: rgb(164, 206, 231);
+}
+
+.incident-container .table-row .author {
+    display: block;
+    justify-content: stretch;
+    align-content: flex-end;
+}
+
+.incident-clips i{
+    padding: 3px 5px;
+    transition: .3s ease;
+    color: #707aa5;
+    background: #454c67;
+    border-radius: 5px;
+
+}
+.incident-clips i:hover{
+    color: #acb4d6;
+}
+
+/* New incident form design */
+#new-incident-column {
+    width: 30%;
+    min-width: 200px;
+
+}
+
+#new-incident-column .new-incident-title {
+    padding: 5px;
+    margin: 5px 10px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.new-incident-form {
+    width: 90%;
+    margin: 5px 15px 15px 10px;
+    padding: 5px;
+}
+
+.new-incident-form input {
+    padding: 7px 6px;
+    background-color: #5489c3;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    width: 100%;
+    margin-bottom: 15px;
+    transition: 0.3s ease;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-weight: 500;
+    font-size: 14px;
+
+
+}
+
+.new-incident-form #caption-input,
+#description-input {
+    padding: 7px;
+    background: linear-gradient(10deg, var(--secondary-color), var(--accent-color));
+    border: none;
+    outline: none;
+    font-size: 12px;
+    line-height: normal;
+    font-weight: 500;
+    resize: vertical;
+    border-radius: 5px;
+    width: 100%;
+    min-height: 30px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    resize: none;
+    transition: 0.3s ease;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+}
+
+.new-incident-form input:focus,
+.new-incident-form #caption-input:focus,
+#description-input:focus {
+    box-shadow: 0px 0px 9px 0px rgb(138 164 255 / 53%);
+
+}
+
+.new-incident-form #description-input {
+    height: 60px;
+}
+
+.new-incident-form .tags-display {
+    border: 3px solid var(--accent-color);
+    width: 100%;
+    height: 40px;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.new-incident-form .tags-display .tag {
+    display: inline-block;
+    background-color: #454c67;
+    font-size: 12px;
+    padding: 3px;
+    border-radius: 5px;
+    margin-top: 5px;
+    margin-right: 5px;
+    font-weight: bold;
+}
+
+.new-incident-form .tags-display .tag:nth-child(1) {
+    color: rgb(211, 211, 211);
+}
+
+.new-incident-form .tags-display .tag:nth-child(2) {
+    color: rgb(212, 197, 146);
+}
+.new-incident-form .tags-display .tag:nth-child(3) {
+    color: rgb(161, 192, 197);
+}
+.new-incident-form .tags-display .tag:nth-child(4) {
+    color: rgb(164, 206, 231);
+}
+.new-incident-form .tags-display .tag:nth-child(5) {
+    color: rgb(203, 164, 226);
+}
+
+
+.select-tags {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+/* select custom design */
+/* Basic styling for the select element */
+select {
+    padding: 10px;
+    margin: 10px 0px 0px 5px;
+    font-size: 12px;
+    border: 1px solid var(--accent-color);
+    background-color: var(--secondary-color);
+    border-radius: 5px;
+    width: 100%;
+    cursor: pointer;
+
+}
+
+/* Styling for the dropdown arrow */
+select::-ms-expand {
+    display: none;
+    /* Remove arrow in IE */
+}
+
+/* Customizing the appearance when the dropdown is opened */
+select:focus {
+    border-color: #5a85b4;
+    outline: none;
+
+}
+
+/* Customizing the appearance of the dropdown options */
+select option {
+    background-color: var(--accent-color);
+    color: var(--text-color-light);
+
+}
+
+/* Styling the dropdown options on hover */
+select option:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.new-incident-form .alert-btns {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.new-incident-form .alert-btns .alert-btn, .new-incident-form .submit-btn, .new-incident-form .update-btn  {
+    background-color: var(--accent-color);
+    color: var(--text-color-light);
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    margin-top: 15px;
+    margin-left: 5px;
+    width: 100%;
+    cursor: pointer;
+    transition: .3s ease-in-out;
+}
+
+.new-incident-form .update-btn{
+    background-color: rgb(45, 118, 161);
+}
+
+.new-incident-form .alert-btns .alert-btn:nth-child(1){
+    margin-right: 0;
+    padding-right: 0;
+    border-top-right-radius:0 ;
+    border-bottom-right-radius:0 ;
+}
+.new-incident-form .alert-btns .alert-btn:nth-child(2){
+    /* border: 3px solid red; */
+    margin-right: 0;
+    padding-right: 0;
+    margin-left: 0;
+    padding-left: 0;
+    border-radius: 0;
+}
+
+.new-incident-form .alert-btns .alert-btn:nth-child(3){
+    margin-left: 0;
+    padding-left: 0;
+    border-top-left-radius:0 ;
+    border-bottom-left-radius:0 ;
+}
+
+
+.new-incident-form .alert-btns .state.active,
+.new-incident-form .alert-btns .level.active,
+.new-incident-form .alert-btns .time.active  {
+    background-color: rgb(45, 118, 161);
+    transition: .3s ease-in-out;
+
+}
+
+.new-incident-form .alert-btns .state.active:focus,
+.new-incident-form .alert-btns .level.active:focus,
+.new-incident-form .alert-btns .time.active:focus  {
+    transform: scale(1.1);
+}
+
+.new-incident-form .new-incident {
+    margin-top: 5px;
+}
+
+/* Map design */
+#map-column {
+    width: 30%;
+    min-width: 200px;
+
+}

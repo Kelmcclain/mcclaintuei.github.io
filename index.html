@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE-edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css">
+
+    <title>Staging</title>
+</head>
+
+<body>
+    <section id="leading"></section>
+    <section id="content">
+        <section id="audio-column">
+
+            <section id="clip-files">
+
+            </section>
+        </section>
+        <section id="incident-column">
+            <div class="search-bar">
+                <div><i class="fa-solid fa-filter"></i></div>
+                <input type="text" placeholder="Search">
+                <div><i class="fa-solid fa-magnifying-glass"></i></div>
+            </div>
+            <div id="incidents">
+                <!-- <div class="incident-container">
+                    <table>
+                        <tr class="table-row">
+                            <td class="incident-info">
+                                <span class="title">Fight At Circle K </span><br>
+                                <span class="caption">Law enforcement units are
+                                    on their way to the scene to
+                                    investigate the incident</span><br>
+                                <span class="address">10625 North 19th Avenue, Phoenix,AZ, USA</span>
+                            </td>
+                            <td><span class="time">15:50</span><span class="date">8/29</span></td>
+                        </tr>
+                        <tr class="table-row">
+                            <td class="tag-container">
+                                <span class="tag">commercial</span>
+                                <span class="tag">assault</span>
+                                <span class="tag">unconfirmed</span>
+                                <span class="tag">active</span>
+                                <span class="tag">medium</span>
+
+                            </td>
+                            <td>
+                                <span class="author">McClain</span>
+                            </td>
+                        </tr>
+                    </table>
+                </div> -->
+
+        </section>
+        <section id="new-incident-column">
+            <div class="new-incident-title">New Incident</div>
+            <div class="new-incident-form">
+                <input id="address" type="text" placeholder="Address">
+                <input id="caption-input" type="text" placeholder="Title"></input>
+                <textarea name="" id="description-input" cols="30" rows="10" placeholder="Update"></textarea>
+                <div class="tags-display">
+                    <span class="tag"></span>
+                </div>
+                <div class="select-tags">
+                    <select id="tags" name="tags" >
+                        <option value="">Tags</option>
+                        <option disabled="">──────────</option>
+                        <option value="gun">Gun</option>
+                        <option value="weapon">Other Weapons</option>
+                        <option disabled="">──────────</option>
+                        <option value="injuries">Injuries</option>
+                        <option value="fatalities">Fatalities</option>
+                        <option disabled="">──────────</option>
+                        <option value="commercial">Commercial</option>
+                        <option value="infrustracture">Infrustracture Damage</option>
+
+                    </select>
+                    <select id="crime" name="crime">
+                        <option value="">Crime</option>
+                        <option disabled="">──────────</option>
+                        <option value="assault">Assault</option>
+                        <option value="disturbance">Disturbance</option>
+                        <option value="robbery">Robbery</option>
+                        <option value="shooting">Shooting</option>
+                        <option value="suspicious">Suspicious</option>
+                        <option value="theft">Theft</option>
+                        <option value="threat">Threats</option>
+                        <option value="trespass">Trespass</option>
+
+
+                    </select>
+                </div>
+                <div class="select-tags">
+                    <select id="fire" name="fire">
+                        <option value="">Fire</option>
+                        <option disabled="">──────────</option>
+                        <option value="fire">Fire</option>
+                        <option value="medical">Medical</option>
+                        <option value="rescue">Rescue</option>
+                        <option disabled="">──────────</option>
+                        <option value="explosion">Explosion</option>
+                        <option value="gas">Gas</option>
+                        <option value="smoke">Smoke</option>
+                        <option value="hazmat">Hazmat</option>
+
+
+                    </select>
+                    <select id="traffic" name="traffic">
+                        <option value="">Traffic</option>
+                        <option disabled="">──────────</option>
+                        <option value="collision">Collision</option>
+                        <option value="closure">Road Closure</option>
+                        <option value="hazard">Road Hazard</option>
+                        <option value="pursuit">Pursuit</option>
+                        <option value="transit">Transit Disruption</option>
+
+                    </select>
+                </div>
+                <div class="select-tags">
+                    <select id="weather" name="weather">
+                        <option value="">Weather</option>
+                        <option disabled="">──────────</option>
+                        <option value="air">Air Quality</option>
+                        <option value="cold">Cold</option>
+                        <option value="earthquake">Earthquake</option>
+                        <option value="flood">Flood</option>
+                        <option value="hail">Hail</option>
+                        <option value="heat">Heat</option>
+                        <option value="landslide">Landslide</option>
+                        <option value="ice-snow">Ice/Snow</option>
+                        <option value="tsunami">Tsunami</option>
+                        <option value="wildfire">Wildfire</option>
+                        <option value="winds">Winds</option>
+
+                    </select>
+                    <select id="misc" name="misc">
+                        <option value="">Misc</option>
+                        <option disabled="">──────────</option>
+                        <option value="bomb">Bomb Scare</option>
+                        <option value="hostage">Hostage Situation</option>
+                        <option value="assembly">Illegal Assembly</option>
+                        <option value="looting">Looting</option>
+                        <option value="suspicious">Suspicious</option>
+                        <option value="police">Police Activity</option>
+                        <option value="protest">Protest</option>
+                        <option value="riot">Rioting</option>
+                        <option value="vandalism">Vandalism</option>
+                    </select>
+                </div>
+                <div>
+                    <div class="alert-btns">
+                        <button class="alert-btn state active">Unconfirmed</button>
+                        <button class="alert-btn  state">Debunked</button>
+                        <button class="alert-btn state">Confirmed</button>
+                    </div>
+                    <div class="alert-btns">
+                        <button class="alert-btn level">Low</button>
+                        <button class="alert-btn level active">Med</button>
+                        <button class="alert-btn level">High</button>
+                    </div>
+                    <div class="alert-btns">
+                        <button class="alert-btn time">Past</button>
+                        <button class="alert-btn time active">Active</button>
+                        <button class="alert-btn time">Future</button>
+                    </div>
+                </div>
+                <div class="alert-btns new-incident">
+                    <button class="submit-btn">New Incident</button>
+                </div>
+            </div>
+        </section>
+        <!-- <section id="map-column">
+            <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d387191.33750346623!2d-73.97968099999999!3d40.6974881!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2ske!4v1693389593322!5m2!1sen!2ske"
+                width="100%" height="93%" style="border:0;" allowfullscreen="" loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </section> -->
+    </section>
+</body>
+<script src="database/incidents.js"></script>
+<script src="database/audio-files.js"></script>
+<script type="module" src="main.js"></script>
+<script src="script.js"></script>
+
+</html>
