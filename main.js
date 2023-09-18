@@ -14,7 +14,7 @@ function createWaveform(audioCardId, audioUrl) {
     waveColor: '#898a8b',    // Color of the waveform
     progressColor: '#454c67', // Color of the progress bar
     url: audioUrl,           // URL of the audio file
-    height: '70'             // Height of the waveform display
+    height: '80'             // Height of the waveform display
   });
 
   // When the user interacts with the waveform (e.g., clicks on it), activate it

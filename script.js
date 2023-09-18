@@ -36,12 +36,10 @@ function renderIncidents() {
         incidentsHTML += html;
 
     });
-    incidentsElement.innerHTML = incidentsHTML
+    incidentsElement.innerHTML = incidentsHTML  
 }
 //initial render
 renderIncidents()
-
-
 
 let defaultIncidentState = 'unconfirmed';
 let defaultIncidentLevel = 'medium';
@@ -133,18 +131,13 @@ function updateDisplay() {
     const selectedValue = selectElement.value;
 
 
-    // Check if the selected value is not an empty string
     if (selectedValue !== "") {
-        // Check if the selected value is already in the selectedTags array
         if (!selectedTags.includes(selectedValue)) {
-            // If it's not in the array, add it
             selectedTags.push(selectedValue);
         }
     }
 
-    // Update the display element
     updateTagsDisplay();
-    console.log(selectedTags)
 
 }
 
@@ -250,7 +243,11 @@ function createIncident() {
         time,
         updates: []
     }
-
+    addressInput.value = '';
+    titleInput.value = '';
+    updateInput.value = '';
+    selectedTags = []
+    tagsDisplay.innerHTML = ''; // You can customize the formatting as needed
     //add incident to database
     incidents.push(incident)
     console.log(incident);
@@ -284,7 +281,8 @@ function updateExistingIncident() {
             updateInput.value = ''; // Clear the update input field
 
             // Update the selected tags
-            selectedTags = tags.slice(); // Make a copy of the tags array
+            const excludedItems = ['active', 'unconfirmed', 'Med'];
+            selectedTags = tags.filter(tag => !excludedItems.includes(tag)).slice();
             // Update the UI to reflect the selected tags
             updateTagsDisplay();
 
@@ -308,3 +306,4 @@ function handleIncidentUpdate() {
 
 // Call the setup function initially
 updateExistingIncident();
+
