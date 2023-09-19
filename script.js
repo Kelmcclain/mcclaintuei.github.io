@@ -1,3 +1,7 @@
+let submitButtonisCollapsed = false;
+
+
+
 function renderIncidents() {
     const incidentsElement = document.querySelector('#incidents');
     let incidentsHTML = [];
@@ -36,7 +40,7 @@ function renderIncidents() {
         incidentsHTML += html;
 
     });
-    incidentsElement.innerHTML = incidentsHTML  
+    incidentsElement.innerHTML = incidentsHTML
 }
 //initial render
 renderIncidents()
@@ -59,7 +63,7 @@ stateAlertButtons.forEach(button => {
 
         // Add the "active" class to the clicked button
         button.classList.add('active');
-        defaultIncidentState = button.innerHTML
+        defaultIncidentState = button.innerHTML.toLowerCase()
     });
 });
 
@@ -76,7 +80,7 @@ levelAlertButtons.forEach(button => {
 
         // Add the "active" class to the clicked button
         button.classList.add('active');
-        defaultIncidentLevel = button.innerHTML
+        defaultIncidentLevel = button.innerHTML.toLowerCase()
 
     });
 });
@@ -94,7 +98,7 @@ timeAlertButtons.forEach(button => {
 
         // Add the "active" class to the clicked button
         button.classList.add('active');
-        defaultIncidentTime = button.innerHTML
+        defaultIncidentTime = button.innerHTML.toLowerCase()
     });
 });
 
@@ -143,25 +147,18 @@ function updateDisplay() {
 
 // Function to update the display element with selected tags
 function updateTagsDisplay() {
-    // Create an HTML string based on the selectedTags array
     const selectedTagsHTML = selectedTags.map(tag => `<span class="tag" onclick="removeTag('${tag}')">${tag}</span>`).join('');
 
-    // Update the display element
-    tagsDisplay.innerHTML = selectedTagsHTML; // You can customize the formatting as needed
+    tagsDisplay.innerHTML = selectedTagsHTML;
 }
 
 // Function to remove a tag when clicked
 function removeTag(tagToRemove) {
-    // Find the index of the tag to remove in the selectedTags array
     const indexToRemove = selectedTags.indexOf(tagToRemove);
-
-    // Check if the tag was found in the array
     if (indexToRemove !== -1) {
-        // Remove the tag from the selectedTags array
         selectedTags.splice(indexToRemove, 1);
         console.log(indexToRemove)
 
-        // Update the display element
         updateTagsDisplay();
         console.log(selectedTags)
     }
@@ -177,8 +174,11 @@ const crime = document.querySelector('#crime').value;
 const traffic = document.querySelector('#traffic').value;
 const misc = document.querySelector('#misc').value;
 //Create new incident
+let isNewIncident = true; // Flag to indicate whether it's a new incident or an update
+
 function createIncident() {
-    // Remove any existing red borders
+    isNewIncident = true;
+
     addressInput.style.border = '';
     titleInput.style.border = '';
     updateInput.style.border = '';
@@ -186,8 +186,6 @@ function createIncident() {
     const title = titleInput.value
     const update = updateInput.value
 
-
-    // Perform validation checks
     if (address.trim() === '') {
         addressInput.style.border = '1px solid red';
         return;
@@ -207,7 +205,7 @@ function createIncident() {
 
     // Get the current date and time components
     const year = currentDate.getFullYear();
-    const month = currentDate.getMonth() + 1; // Months are 0-indexed, so add 1
+    const month = currentDate.getMonth() + 1;
     const day = currentDate.getDate();
     const hours = currentDate.getHours();
     const minutes = currentDate.getMinutes();
@@ -218,8 +216,8 @@ function createIncident() {
 
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let incidentId = '';
-
-    for (let i = 0; i < length; i++) {
+    const desiredIdLength = 10;
+    for (let i = 0; i < desiredIdLength; i++) {
         const randomIndex = Math.floor(Math.random() * characters.length);
         incidentId += characters.charAt(randomIndex);
     }
@@ -258,52 +256,115 @@ function createIncident() {
 }
 
 //handle click event to create new incident
-document.querySelector('.submit-btn').addEventListener('click', () => {
-    createIncident();
-    updateExistingIncident();
+const submitButton = document.querySelector('.submit-btn')
+const updateButton = document.querySelector('.update-btn')
+const submitButtonContainer = document.querySelector('.new-incident .submit-btn-container');
+const updateButtonContainer = document.querySelector('.new-incident .update-btn-container');
 
-})
 
-function updateExistingIncident() {
-    const incidentContainers = document.querySelectorAll('.incident-container');
-    incidentContainers.forEach(container => {
-        container.addEventListener('click', () => {
-            document.querySelector('.new-incident')
-                .innerHTML = `<button class="update-btn">Update</button> `
 
-            const { dataset: { incidentId } } = container;
-            const matchingIncident = incidents.find((incident) => incident.incidentId === incidentId)
-            const { title, update, address, clip, tags, author, date, time } = matchingIncident;
+submitButton.addEventListener('click', createIncident)
 
-            // Populate input fields with incident details
-            addressInput.value = address;
-            titleInput.value = title;
-            updateInput.value = ''; // Clear the update input field
 
-            // Update the selected tags
-            const excludedItems = ['active', 'unconfirmed', 'Med'];
-            selectedTags = tags.filter(tag => !excludedItems.includes(tag)).slice();
-            // Update the UI to reflect the selected tags
-            updateTagsDisplay();
+let matchingIncident = null; // Define it in a higher scope
+editExisitingIncident()
 
-        });
-    });
-}
+function editExisitingIncident() {
+const incidentContainers = document.querySelectorAll('.incident-container');
 
-function handleIncidentUpdate() {
-    const saveUpdateButton = document.querySelector('.update-btn');
-
-    saveUpdateButton.addEventListener('click', () => {
-        const updateText = updateInput.value.trim()
-        // Ensure the update text is not empty
-        if (updateText === '') {
-            return;
+incidentContainers.forEach(container => {
+    container.addEventListener('click', () => {
+        console.log('Container Clicked')
+        if (!submitButtonisCollapsed) {
+            submitButtonContainer.style.width = '0px';
+            updateButtonContainer.style.width = '100%'
+            submitButtonisCollapsed = !submitButtonisCollapsed;
         }
 
-    })
+        const { dataset: { incidentId } } = container;
+        matchingIncident = incidents.find((incident) => incident.incidentId === incidentId)
+        const { title, update, address, clip, tags, author, date, time } = matchingIncident;
+        // Populate input fields with incident details
+        console.log(matchingIncident)
+        addressInput.value = address;
+        titleInput.value = title;
+        updateInput.value = ''; // Clear the update input field
 
+        // Update the selected tags
+        const excludedItems = ['active', 'unconfirmed', 'medium', 'debunked', 'confirmed', 'low', 'high', 'past', 'future'];
+        selectedTags = tags.filter(tag => !excludedItems.includes(tag)).slice();
+        // Update the UI to reflect the selected tags
+        updateTagsDisplay();
+    });
+});
 }
 
-// Call the setup function initially
-updateExistingIncident();
+
+updateButton.addEventListener('click', publishUpdate)
+
+function publishUpdate() {
+    const updateText = updateInput.value.trim()
+
+    console.log('update triggered')
+    if (updateText === '') {
+        return;
+    }
+
+    if (submitButtonisCollapsed) {
+        submitButtonContainer.style.width = '100%';
+        updateButtonContainer.style.width = '0px'
+        submitButtonisCollapsed = !submitButtonisCollapsed;
+    }
+    // Create a new incident object for the update
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth() + 1;
+    const day = currentDate.getDate();
+    const hours = currentDate.getHours();
+    const minutes = currentDate.getMinutes();
+    const seconds = currentDate.getSeconds();
+    const date = `${month}/${day}`;
+    const time = `${hours}:${minutes}`;
+
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let incidentId = '';
+
+    for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        incidentId += characters.charAt(randomIndex);
+    }
+    const timestamp = Date.now();
+    incidentId += timestamp.toString();
+    const updateIncident = {
+        incidentId,
+        title: titleInput.value,
+        update: updateText,
+        address: addressInput.value,
+        date,
+        clip: 'SB194WcCSq0YkSQ',
+        tags: selectedTags.slice(), // Copy selected tags
+        author: 'McClain',
+        time,
+    };
+    // Update the existing incident
+    console.log(matchingIncident)
+    matchingIncident.updates.push(updateIncident);
+
+    // Clear the update input field
+    updateInput.value = '';
+
+    // Update the local storage to persist incidents
+    localStorage.setItem('incidents', JSON.stringify(incidents));
+    console.log('update published')
+
+    // Re-render the incidents list to reflect the changes
+    // Clear input fields and selected tags
+    addressInput.value = '';
+    titleInput.value = '';
+    updateInput.value = '';
+    selectedTags = [];
+    updateTagsDisplay();
+    renderIncidents();
+}
+
 

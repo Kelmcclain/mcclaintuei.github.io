@@ -183,7 +183,7 @@ body {
 
 .search-bar i {
     font-size: 24px;
-    padding: 10px ;
+    padding: 10px;
     width: 20%;
 }
 
@@ -300,7 +300,7 @@ body {
     bottom: 5px;
 }
 
-.incident-clips i{
+.incident-clips i {
     padding: 3px 5px;
     transition: .3s ease;
     color: #707aa5;
@@ -308,13 +308,14 @@ body {
     border-radius: 5px;
 
 }
-.incident-clips i:hover{
+
+.incident-clips i:hover {
     color: #acb4d6;
 }
 
 /* New incident form design */
 #new-incident-column {
-    width: 30%;
+    width: 25%;
     min-width: 200px;
 
 }
@@ -408,12 +409,15 @@ body {
 .new-incident-form .tags-display .tag:nth-child(2) {
     color: rgb(212, 197, 146);
 }
+
 .new-incident-form .tags-display .tag:nth-child(3) {
     color: rgb(161, 192, 197);
 }
+
 .new-incident-form .tags-display .tag:nth-child(4) {
     color: rgb(164, 206, 231);
 }
+
 .new-incident-form .tags-display .tag:nth-child(5) {
     color: rgb(203, 164, 226);
 }
@@ -471,30 +475,50 @@ select option:hover {
     justify-content: space-between;
 }
 
-.new-incident-form .alert-btns .alert-btn, .new-incident-form .submit-btn, .new-incident-form .update-btn  {
+.new-incident-form .alert-btns .alert-btn,
+.new-incident-form .submit-btn,
+.new-incident-form .update-btn {
     background-color: var(--accent-color);
     color: var(--text-color-light);
+    overflow: hidden;
     padding: 10px;
     border: none;
     border-radius: 5px;
     margin-top: 15px;
     margin-left: 5px;
-    width: 100%;
+    width: 99%;
     cursor: pointer;
     transition: .3s ease-in-out;
 }
 
-.new-incident-form .update-btn{
+.new-incident-form .submit-btn-container {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    transition: width 0.3s ease-in-out;
+}
+
+.new-incident-form .update-btn-container {
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    width: 0px;
+    transition: width 0.1s ease-in-out;
+}
+
+.new-incident-form .update-btn {
     background-color: rgb(45, 118, 161);
 }
 
-.new-incident-form .alert-btns .alert-btn:nth-child(1){
+.new-incident-form .alert-btns .alert-btn:nth-child(1) {
     margin-right: 0;
     padding-right: 0;
-    border-top-right-radius:0 ;
-    border-bottom-right-radius:0 ;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
 }
-.new-incident-form .alert-btns .alert-btn:nth-child(2){
+
+.new-incident-form .alert-btns .alert-btn:nth-child(2) {
     /* border: 3px solid red; */
     margin-right: 0;
     padding-right: 0;
@@ -503,17 +527,17 @@ select option:hover {
     border-radius: 0;
 }
 
-.new-incident-form .alert-btns .alert-btn:nth-child(3){
+.new-incident-form .alert-btns .alert-btn:nth-child(3) {
     margin-left: 0;
     padding-left: 0;
-    border-top-left-radius:0 ;
-    border-bottom-left-radius:0 ;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
 }
 
 
 .new-incident-form .alert-btns .state.active,
 .new-incident-form .alert-btns .level.active,
-.new-incident-form .alert-btns .time.active  {
+.new-incident-form .alert-btns .time.active {
     background-color: rgb(45, 118, 161);
     transition: .3s ease-in-out;
 
@@ -521,7 +545,7 @@ select option:hover {
 
 .new-incident-form .alert-btns .state.active:focus,
 .new-incident-form .alert-btns .level.active:focus,
-.new-incident-form .alert-btns .time.active:focus  {
+.new-incident-form .alert-btns .time.active:focus {
     transform: scale(1.1);
 }
 
@@ -531,7 +555,7 @@ select option:hover {
 
 /* Map design */
 #map-column {
-    width: 30%;
+    width: 25%;
     min-width: 200px;
 
 }
