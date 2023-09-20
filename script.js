@@ -41,6 +41,8 @@ function renderIncidents() {
 
     });
     incidentsElement.innerHTML = incidentsHTML
+    editExisitingIncident()
+
 }
 //initial render
 renderIncidents()
@@ -150,6 +152,8 @@ function updateTagsDisplay() {
     const selectedTagsHTML = selectedTags.map(tag => `<span class="tag" onclick="removeTag('${tag}')">${tag}</span>`).join('');
 
     tagsDisplay.innerHTML = selectedTagsHTML;
+    editExisitingIncident()
+
 }
 
 // Function to remove a tag when clicked
@@ -157,10 +161,8 @@ function removeTag(tagToRemove) {
     const indexToRemove = selectedTags.indexOf(tagToRemove);
     if (indexToRemove !== -1) {
         selectedTags.splice(indexToRemove, 1);
-        console.log(indexToRemove)
 
         updateTagsDisplay();
-        console.log(selectedTags)
     }
 }
 
@@ -248,7 +250,6 @@ function createIncident() {
     tagsDisplay.innerHTML = ''; // You can customize the formatting as needed
     //add incident to database
     incidents.push(incident)
-    console.log(incident);
     //update persistance database
     localStorage.setItem('incidents', JSON.stringify(incidents))
     renderIncidents()
@@ -270,33 +271,30 @@ let matchingIncident = null; // Define it in a higher scope
 editExisitingIncident()
 
 function editExisitingIncident() {
-const incidentContainers = document.querySelectorAll('.incident-container');
+    const incidentContainers = document.querySelectorAll('.incident-container');
+    incidentContainers.forEach(container => {
+        container.addEventListener('click', () => {
+            if (!submitButtonisCollapsed) {
+                submitButtonContainer.style.width = '0px';
+                updateButtonContainer.style.width = '100%'
+                submitButtonisCollapsed = !submitButtonisCollapsed;
+            }
 
-incidentContainers.forEach(container => {
-    container.addEventListener('click', () => {
-        console.log('Container Clicked')
-        if (!submitButtonisCollapsed) {
-            submitButtonContainer.style.width = '0px';
-            updateButtonContainer.style.width = '100%'
-            submitButtonisCollapsed = !submitButtonisCollapsed;
-        }
+            const { dataset: { incidentId } } = container;
+            matchingIncident = incidents.find((incident) => incident.incidentId === incidentId)
+            const { title, update, address, clip, tags, author, date, time } = matchingIncident;
+            // Populate input fields with incident details
+            addressInput.value = address;
+            titleInput.value = title;
+            updateInput.value = ''; // Clear the update input field
 
-        const { dataset: { incidentId } } = container;
-        matchingIncident = incidents.find((incident) => incident.incidentId === incidentId)
-        const { title, update, address, clip, tags, author, date, time } = matchingIncident;
-        // Populate input fields with incident details
-        console.log(matchingIncident)
-        addressInput.value = address;
-        titleInput.value = title;
-        updateInput.value = ''; // Clear the update input field
-
-        // Update the selected tags
-        const excludedItems = ['active', 'unconfirmed', 'medium', 'debunked', 'confirmed', 'low', 'high', 'past', 'future'];
-        selectedTags = tags.filter(tag => !excludedItems.includes(tag)).slice();
-        // Update the UI to reflect the selected tags
-        updateTagsDisplay();
+            // Update the selected tags
+            const excludedItems = ['active', 'unconfirmed', 'medium', 'debunked', 'confirmed', 'low', 'high', 'past', 'future'];
+            selectedTags = tags.filter(tag => !excludedItems.includes(tag)).slice();
+            // Update the UI to reflect the selected tags
+            updateTagsDisplay();
+        });
     });
-});
 }
 
 
@@ -305,15 +303,8 @@ updateButton.addEventListener('click', publishUpdate)
 function publishUpdate() {
     const updateText = updateInput.value.trim()
 
-    console.log('update triggered')
     if (updateText === '') {
         return;
-    }
-
-    if (submitButtonisCollapsed) {
-        submitButtonContainer.style.width = '100%';
-        updateButtonContainer.style.width = '0px'
-        submitButtonisCollapsed = !submitButtonisCollapsed;
     }
     // Create a new incident object for the update
     const currentDate = new Date();
@@ -347,8 +338,7 @@ function publishUpdate() {
         time,
     };
     // Update the existing incident
-    console.log(matchingIncident)
-    matchingIncident.updates.push(updateIncident);
+    matchingIncident.updates.unshift(updateIncident);
 
     // Clear the update input field
     updateInput.value = '';
@@ -356,15 +346,29 @@ function publishUpdate() {
     // Update the local storage to persist incidents
     localStorage.setItem('incidents', JSON.stringify(incidents));
     console.log('update published')
+    console.log(matchingIncident)
 
     // Re-render the incidents list to reflect the changes
     // Clear input fields and selected tags
+ resetState()
+}
+
+function resetState (){
     addressInput.value = '';
     titleInput.value = '';
     updateInput.value = '';
     selectedTags = [];
     updateTagsDisplay();
     renderIncidents();
+    if (submitButtonisCollapsed) {
+        submitButtonContainer.style.width = '100%';
+        updateButtonContainer.style.width = '0px'
+        submitButtonisCollapsed = !submitButtonisCollapsed;
+    }
 }
-
-
+document.addEventListener('keydown', (event) => {
+    const pressedKey = event.key
+    if (pressedKey === "Escape") {
+        resetState()
+    }
+})
