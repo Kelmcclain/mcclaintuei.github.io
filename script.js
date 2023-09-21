@@ -6,15 +6,30 @@ function renderIncidents() {
     const incidentsElement = document.querySelector('#incidents');
     let incidentsHTML = [];
     incidents.forEach(incident => {
-        const { incidentId, title, update, address, clip, tags, author, date, time } = incident;
+        let { incidentId, title, update ,updates, address, clip, tags, author, date, time } = incident;
+
+
+        if(updates.length != 0){
+            title = updates[0].title
+            update = updates[0].update
+            address = updates[0].address
+            time = updates[0].time
+            date = updates[0].date
+            author = updates[0].author
+            clip = updates[0].clip
+        }
         const tagEl = []
+        const updatesCount = updates.length
         tags.forEach(item => {
             const tagHTML = `<span class="tag">${item}</span>`
             tagEl.push(tagHTML)
         })
 
+        
         let html = `
                     <div class="incident-container" data-incident-id="${incidentId}">
+                    <div class="incident-update-count">${updatesCount}</div>
+
                     <table>
                         <tr class="table-row">
                             <td class="incident-info">
@@ -42,7 +57,13 @@ function renderIncidents() {
     });
     incidentsElement.innerHTML = incidentsHTML
     editExisitingIncident()
-
+    const updatesCountBadge = document.querySelectorAll('.incident-update-count')
+    updatesCountBadge.forEach((badge)=>{
+        const updCount = Number(badge.innerHTML)
+        if(updCount <= 0){
+            badge.classList.add('hidden')
+        }
+    })
 }
 //initial render
 renderIncidents()
@@ -243,16 +264,12 @@ function createIncident() {
         time,
         updates: []
     }
-    addressInput.value = '';
-    titleInput.value = '';
-    updateInput.value = '';
-    selectedTags = []
-    tagsDisplay.innerHTML = ''; // You can customize the formatting as needed
-    //add incident to database
     incidents.push(incident)
-    //update persistance database
     localStorage.setItem('incidents', JSON.stringify(incidents))
-    renderIncidents()
+
+    // tagsDisplay.innerHTML = '';
+    resetState()
+
 
 }
 
@@ -317,17 +334,7 @@ function publishUpdate() {
     const date = `${month}/${day}`;
     const time = `${hours}:${minutes}`;
 
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let incidentId = '';
-
-    for (let i = 0; i < length; i++) {
-        const randomIndex = Math.floor(Math.random() * characters.length);
-        incidentId += characters.charAt(randomIndex);
-    }
-    const timestamp = Date.now();
-    incidentId += timestamp.toString();
     const updateIncident = {
-        incidentId,
         title: titleInput.value,
         update: updateText,
         address: addressInput.value,
@@ -366,6 +373,7 @@ function resetState (){
         submitButtonisCollapsed = !submitButtonisCollapsed;
     }
 }
+document.querySelector('.clear-incident-form').addEventListener('click', resetState)
 document.addEventListener('keydown', (event) => {
     const pressedKey = event.key
     if (pressedKey === "Escape") {
