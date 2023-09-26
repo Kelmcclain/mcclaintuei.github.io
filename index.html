@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="style.css">
 
     <title>Staging</title>
+
 </head>
 
 <body>
@@ -61,7 +62,7 @@
         <section id="new-incident-column">
             <div class="new-incident-title">New Incident</div>
             <div class="new-incident-form">
-            <div class="clear-incident-form">X</div>    
+                <div class="clear-incident-form hidden">X</div>
                 <input id="address" type="text" placeholder="Address">
                 <input id="caption-input" type="text" placeholder="Title"></input>
                 <textarea name="" id="description-input" cols="30" rows="10" placeholder="Update"></textarea>
@@ -184,11 +185,14 @@
                 referrerpolicy="no-referrer-when-downgrade"></iframe>
         </section> -->
     </section>
+    <script type="module" src="bundle.js"></script>   
     <script src="https://unpkg.com/scrollreveal"></script>
     <script src="database/incidents.js"></script>
     <script src="database/audio-files.js"></script>
     <script type="module" src="main.js"></script>
     <script src="script.js"></script>
+
+      
 </body>
 
 

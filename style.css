@@ -208,11 +208,13 @@ body {
     background: linear-gradient(45deg, var(--secondary-color), var(--accent-color));
     margin: 15px 15px 0px 15px;
     padding: 5px;
+    color: #665050;
     border-radius: 5px;
     color: var(--text-color-light);
     box-shadow: -3px 3px 9px 0px rgb(138 164 255 / 30%);
     cursor: pointer;
     transition: 0.3s ease-in-out;
+    overflow: hidden;
 
 }
 .incident-update-count{
@@ -228,11 +230,18 @@ body {
     height: 20px;
     color: var(--text-color-light);
     border-radius: 10px;
-
 }
 
-.hidden{
-    display: none;
+.updates-container{
+    display: flex;
+    height: 0px;
+    overflow: hidden;
+    transition: .2s ease-in-out;
+}
+
+.show-updates{
+    height: 100%;
+
 }
 
 
@@ -595,4 +604,8 @@ select option:hover {
     width: 25%;
     min-width: 200px;
 
+}
+
+.hidden{
+    display: none;
 }

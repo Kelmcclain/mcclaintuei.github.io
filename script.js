@@ -6,10 +6,10 @@ function renderIncidents() {
     const incidentsElement = document.querySelector('#incidents');
     let incidentsHTML = [];
     incidents.forEach(incident => {
-        let { incidentId, title, update ,updates, address, clip, tags, author, date, time } = incident;
+        let { incidentId, title, update, updates, address, clip, tags, author, date, time } = incident;
 
 
-        if(updates.length != 0){
+        if (updates.length != 0) {
             title = updates[0].title
             update = updates[0].update
             address = updates[0].address
@@ -25,9 +25,20 @@ function renderIncidents() {
             tagEl.push(tagHTML)
         })
 
-        
+        let levelStyling = null
+
+        tags.forEach((tag) => {
+            if (tag === 'low') {
+                levelStyling = 'linear-gradient(45deg, var(--secondary-color), #576f7e);'
+            } else if (tag === 'high') {
+                levelStyling = 'linear-gradient(45deg, var(--secondary-color), #665050);'
+
+            }
+        })
+
+
         let html = `
-                    <div class="incident-container" data-incident-id="${incidentId}">
+                    <div class="incident-container" style="background:${levelStyling}" data-incident-id="${incidentId}">
                     <div class="incident-update-count">${updatesCount}</div>
 
                     <table>
@@ -56,11 +67,11 @@ function renderIncidents() {
 
     });
     incidentsElement.innerHTML = incidentsHTML
-    editExisitingIncident()
+    // editExisitingIncident()
     const updatesCountBadge = document.querySelectorAll('.incident-update-count')
-    updatesCountBadge.forEach((badge)=>{
+    updatesCountBadge.forEach((badge) => {
         const updCount = Number(badge.innerHTML)
-        if(updCount <= 0){
+        if (updCount <= 0) {
             badge.classList.add('hidden')
         }
     })
@@ -285,12 +296,16 @@ submitButton.addEventListener('click', createIncident)
 
 
 let matchingIncident = null; // Define it in a higher scope
+
 editExisitingIncident()
+
 
 function editExisitingIncident() {
     const incidentContainers = document.querySelectorAll('.incident-container');
     incidentContainers.forEach(container => {
         container.addEventListener('click', () => {
+            document.querySelector('.clear-incident-form').classList.remove('hidden')
+
             if (!submitButtonisCollapsed) {
                 submitButtonContainer.style.width = '0px';
                 updateButtonContainer.style.width = '100%'
@@ -312,6 +327,7 @@ function editExisitingIncident() {
             updateTagsDisplay();
         });
     });
+
 }
 
 
@@ -357,10 +373,10 @@ function publishUpdate() {
 
     // Re-render the incidents list to reflect the changes
     // Clear input fields and selected tags
- resetState()
+    resetState()
 }
 
-function resetState (){
+function resetState() {
     addressInput.value = '';
     titleInput.value = '';
     updateInput.value = '';
@@ -372,6 +388,8 @@ function resetState (){
         updateButtonContainer.style.width = '0px'
         submitButtonisCollapsed = !submitButtonisCollapsed;
     }
+    document.querySelector('.clear-incident-form').classList.add('hidden')
+
 }
 document.querySelector('.clear-incident-form').addEventListener('click', resetState)
 document.addEventListener('keydown', (event) => {
@@ -380,3 +398,4 @@ document.addEventListener('keydown', (event) => {
         resetState()
     }
 })
+
