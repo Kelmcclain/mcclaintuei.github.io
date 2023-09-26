@@ -165,7 +165,7 @@ updateTags()
 // Function to update the display element with selected values
 function updateDisplay() {
     // Get the value and ID of the select element that triggered the change event
-    const selectElement = this; // 'this' refers to the select element that triggered the event
+    const selectElement = this; 
     const selectedValue = selectElement.value;
 
 
