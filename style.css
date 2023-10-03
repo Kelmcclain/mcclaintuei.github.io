@@ -74,6 +74,23 @@ body {
     height: 60px;
     width: 100%;
     background-color: var(--secondary-color);
+    position: relative;
+}
+
+#leading .logout {
+    position: absolute;
+    top: 40%;
+    right: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#leading .profile {
+    position: absolute;
+    top: 40%;
+    right: 50px;
+    font-size: 16px;
+    cursor: pointer;
 }
 
 #content {
@@ -183,7 +200,7 @@ body {
 }
 
 .search-bar i {
-    font-size: 24px;
+    font-size: 18px;
     padding: 10px;
     width: 20%;
 }
@@ -217,7 +234,8 @@ body {
     overflow: hidden;
 
 }
-.incident-update-count{
+
+.incident-update-count {
     display: flex;
     position: absolute;
     font-weight: 500;
@@ -232,15 +250,16 @@ body {
     border-radius: 10px;
 }
 
-.updates-container{
+.updates-container {
     display: flex;
-    height: 0px;
+    height: 0rem;
     overflow: hidden;
     transition: .2s ease-in-out;
 }
 
-.show-updates{
-    height: 100%;
+.show-updates {
+    height: 12rem;
+    transition: .2s ease-in-out;
 
 }
 
@@ -347,7 +366,7 @@ body {
 #new-incident-column {
     width: 25%;
     min-width: 200px;
-position: relative;
+    position: relative;
 }
 
 .clear-incident-form {
@@ -606,6 +625,6 @@ select option:hover {
 
 }
 
-.hidden{
+.hidden {
     display: none;
 }
