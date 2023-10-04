@@ -178,7 +178,7 @@ checkUserAuthStatus((isUserLoggedIn) => {
 
 
 
-if (currentPage == '/') {
+if (currentPage == '/' || currentPage == '/index.html' ) {
     document.querySelector('.logout').addEventListener('click', logout);
 }
 // Log the user out

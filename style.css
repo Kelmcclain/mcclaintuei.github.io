@@ -21,7 +21,8 @@ body::-webkit-scrollbar,
 #audio-column::-webkit-scrollbar,
 #incident-column::-webkit-scrollbar,
 #new-incident-column::-webkit-scrollbar,
-textarea::-webkit-scrollbar {
+textarea::-webkit-scrollbar,
+.updates-container::-webkit-scrollbar {
     width: 8px;
 }
 
@@ -69,6 +70,41 @@ body {
 
 }
 
+/* loading screen animation */
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--primary-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+  }
+
+  #loading-screen p{
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--accent-color);
+  }
+  
+  .loader {
+    border: 5px solid var(--secondary-color);
+    border-top: 4px solid var(--primary-color);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+
 
 #leading {
     height: 60px;
@@ -89,8 +125,13 @@ body {
     position: absolute;
     top: 40%;
     right: 50px;
-    font-size: 16px;
+    font-size: 18px;
     cursor: pointer;
+    transition: .2s ease-in-out;
+}
+
+#leading .profile:hover{
+color: gray;
 }
 
 #content {
@@ -252,9 +293,39 @@ body {
 
 .updates-container {
     display: flex;
+    flex-direction: column;
     height: 0rem;
-    overflow: hidden;
+    overflow-y: scroll;
     transition: .2s ease-in-out;
+}
+
+.updates-container table{
+    border-top: 2px solid #262d47;
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+
+}
+
+/* scrollbar on the root <html> or <body> element */
+.updates-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+/* Track */
+.updates-container::-webkit-scrollbar-track {
+    background: var(--accent-color);
+}
+
+/* Handle */
+.updates-container::-webkit-scrollbar-thumb {
+    background: rgb(89, 118, 144);
+    border-radius: 6px;
+}
+
+/* Handle on hover */
+.updates-container::-webkit-scrollbar-thumb:hover {
+    background: rgb(136, 180, 218);
 }
 
 .show-updates {
@@ -344,9 +415,9 @@ body {
     display: block;
     justify-content: stretch;
     align-content: flex-end;
-    position: absolute;
-    right: 5px;
-    bottom: 5px;
+    font-weight: 400;
+    color: rgb(188, 193, 214);
+   
 }
 
 .incident-clips i {
@@ -390,6 +461,9 @@ body {
     margin: 5px 10px;
     font-weight: bold;
     font-size: 14px;
+    white-space: nowrap; /* Prevent line breaks */
+      overflow: hidden; /* Hide overflowing content */
+      text-overflow: ellipsis;
 }
 
 .new-incident-form {
@@ -540,6 +614,7 @@ select option:hover {
     justify-content: space-between;
 }
 
+
 .new-incident-form .alert-btns .alert-btn,
 .new-incident-form .submit-btn,
 .new-incident-form .update-btn {
@@ -553,8 +628,9 @@ select option:hover {
     margin-left: 5px;
     width: 99%;
     cursor: pointer;
-    transition: .3s ease-in-out;
+    transition: .2s ease-in-out;
 }
+
 
 .new-incident-form .submit-btn-container {
     position: relative;

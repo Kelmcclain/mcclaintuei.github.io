@@ -2,7 +2,7 @@ import WaveSurfer from 'https://unpkg.com/wavesurfer.js@7/dist/wavesurfer.esm.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
 import {
   getFirestore, collection, onSnapshot, addDoc,
-  setDoc, doc, query, where, orderBy, getDocs, 
+  setDoc, doc, query, where, orderBy, getDocs,
   collectionGroup, updateDoc, deleteDoc, arrayUnion,
   serverTimestamp, Timestamp
 } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js";
@@ -34,42 +34,36 @@ let displayName
 
 let localeStagingData = []
 // Listen for changes in authentication state
+
+
+const incidentsColRef = collection(database, "incidents");
+const q = query(incidentsColRef, orderBy('createdAt', 'asc'))
+//render records to UI
+onSnapshot(q, (snapshot) => {
+  let stagingData = []
+  snapshot.docs.forEach((doc) => {
+    stagingData.push({ ...doc.data(), id: doc.id });
+    localeStagingData.push({ ...doc.data(), id: doc.id });
+
+  })
+  renderIncidents(stagingData)
+})
+
 onAuthStateChanged(auth, (user) => {
   if (user) {
     userUid = user.uid;
     console.log(`User is signed in with UID: ${userUid}`);
     displayName = user.displayName
-
-
     const email = user.email;
     const photoURL = user.photoURL;
     const emailVerified = user.emailVerified;
-    console.log(displayName, email,photoURL,emailVerified)
-
-
-
-
-
-    const incidentsColRef = collection(database, "incidents");
-    const q = query(incidentsColRef, orderBy('createdAt','asc'))
-    //render records to UI
-    onSnapshot(q, (snapshot) => {
-      let stagingData = []
-      snapshot.docs.forEach((doc) => {
-        stagingData.push({ ...doc.data(), id: doc.id });
-        localeStagingData.push({ ...doc.data(), id: doc.id });
-
-      })
-
-      renderIncidents(stagingData)
-
-    })
+    console.log(displayName, email, photoURL, emailVerified)
   } else {
     console.log("User is signed out");
   }
 });
 
-document.querySelector('.profile').addEventListener('click',()=>{
+document.querySelector('.profile').addEventListener('click', () => {
   window.location.href = 'profile.html'
 
 })
@@ -112,18 +106,17 @@ function activateWaveform(wavesurfer) {
 
 document.addEventListener('keydown', (event) => {
   const focusedElement = document.activeElement;
-
   if (
     (focusedElement.tagName !== 'INPUT' &&
       focusedElement.tagName !== 'TEXTAREA') ||
     (focusedElement.tagName === 'INPUT' && focusedElement.type !== 'text')
   ) {
-    if (event.code === 'ArrowDown') {
+    if (event.code === 'ArrowDown' || event.key === 's') {
       event.preventDefault();
       if (activeIndex > 0) {
         activateWaveform(waveforms[activeIndex - 1]);
       }
-    } else if (event.code === 'ArrowUp') {
+    } else if (event.code === 'ArrowUp' || event.key === 'w') {
       event.preventDefault();
       if (activeIndex < waveforms.length - 1) {
         activateWaveform(waveforms[activeIndex + 1]);
@@ -137,7 +130,7 @@ document.addEventListener('keydown', (event) => {
         } else {
           activeWaveform.play();
         }
-      } else if (event.code === 'ArrowLeft') {
+      } else if (event.code === 'ArrowLeft' || event.key === 'a') {
         event.preventDefault();
         const currentTime = activeWaveform.getCurrentTime();
         const newTime = currentTime - 3;
@@ -146,7 +139,7 @@ document.addEventListener('keydown', (event) => {
         } else {
           activeWaveform.seekTo(newTime / activeWaveform.getDuration());
         }
-      } else if (event.code === 'ArrowRight') {
+      } else if (event.code === 'ArrowRight' || event.key === 'd') {
         event.preventDefault();
         const currentTime = activeWaveform.getCurrentTime();
         const newTime = currentTime + 2;
@@ -201,9 +194,12 @@ function renderIncidents(data) {
   const incidentsElement = document.querySelector('#incidents');
   let incidentsHTML = [];
   data.forEach(incident => {
+    // Extract incident details
     let { id, title, update, updates, address, clip, tags, author, date, time } = incident;
+    let index = updates.length - 1
+
+    let originalIncident = null
     if (updates.length != 0) {
-      let index = updates.length - 1
       title = updates[index].title
       update = updates[index].update
       address = updates[index].address
@@ -211,6 +207,9 @@ function renderIncidents(data) {
       date = updates[index].date
       author = updates[index].author
       clip = updates[index].clip
+      tags = updates[index].tags
+      originalIncident = incident
+      delete originalIncident.updates
     }
     const tagEl = []
     const updatesCount = updates.length
@@ -225,59 +224,80 @@ function renderIncidents(data) {
       if (tag === 'low') {
         levelStyling = 'linear-gradient(45deg, var(--secondary-color), #576f7e);'
       } else if (tag === 'high') {
-        levelStyling = 'linear-gradient(45deg, var(--secondary-color), #665050);'
+        levelStyling = 'linear-gradient(45deg, var(--secondary-color), #413f86);'
 
       }
     })
 
+    // Create HTML for updates
+    let updatesHTML = [];
+    let isFirstIteration = true;
+    updates.reverse();
+    updates.push(originalIncident)
+    updates.forEach(update => {
+      if (isFirstIteration) {
+        isFirstIteration = false;
+        return; // Skip the first iteration
+      }
+      const tagEl = []
+      update.tags.forEach(item => {
+        const tagHTML = `<span class="tag">${item}</span>`
+        tagEl.push(tagHTML)
+      })
+      // Generate HTML for each update based on your desired format
+      updatesHTML.push(`
+      <table>
+
+      <tr class="table-row">
+          <td class="incident-info">
+              <span class="title">${update.title}</span><br>
+              <span class="caption">${update.update}</span><br>
+              <span class="address">${update.address}</span>
+          </td>
+          <td><span class="time">${time}</span><span class="date">${update.date}</span></td>
+      </tr>
+        <tr class="table-row">
+            <td class="tag-container">                                
+                ${tagEl.join('')}
+            </td>
+            <td>
+                <span class="author">${update.author}</span>
+            </td>
+        </tr>
+        <tr><td><span class="incident-clips"><i class="fa fa-play" aria-hidden="true"></i></span></td></tr>
+        </table>
+
+        `);
+    });
 
     let html = `
-              <div class="incident-container" style="background:${levelStyling}" data-incident-id="${id}">
-              <div class="incident-update-count">${updatesCount}</div>
+    <div class="incident-container" style="background:${levelStyling}" data-incident-id="${id}">
+      <div class="incident-update-count">${updatesCount}</div>
 
-              <table>
-                  <tr class="table-row">
-                      <td class="incident-info">
-                          <span class="title">${title}</span><br>
-                          <span class="caption">${update}</span><br>
-                          <span class="address">${address}</span>
-                      </td>
-                      <td><span class="time">${time}</span><span class="date">${date}</span></td>
-                  </tr>
-                  <tr class="table-row">
-                      <td class="tag-container">                                
-                          ${tagEl.join('')}
-                      </td>
-                      <td>
-                          <span class="author">${author}</span>
-                      </td>
-                  </tr>
-                  <tr><td><span class="incident-clips"><i class="fa fa-play" aria-hidden="true"></i></span></td></tr>
-              </table>
-              <div class="updates-container">
-                <table> 
-                    <tr class="table-row">
-                        <td class="incident-info">
-                            <span class="title">${title}</span><br>
-                            <span class="caption">${update}</span><br>
-                            <span class="address">${address}</span>
-                        </td>
-                        <td><span class="time">${time}</span><span class="date">${date}</span></td>
-                    </tr>
-                    <tr class="table-row">
-                        <td class="tag-container">                                
-                            ${tagEl.join('')}
-                        </td>
-                        <td>
-                            <span class="author">${author}</span>
-                        </td>
-                    </tr>
-                    <tr><td><span class="incident-clips"><i class="fa fa-play" aria-hidden="true"></i></span></td></tr>
-                  </table>
-              </div>
-          </div>
-          `
-
+      <table>
+          <tr class="table-row">
+              <td class="incident-info">
+                  <span class="title">${title}</span><br>
+                  <span class="caption">${update}</span><br>
+                  <span class="address">${address}</span>
+              </td>
+              <td><span class="time">${time}</span><span class="date">${date}</span></td>
+          </tr>
+          <tr class="table-row">
+              <td class="tag-container">                                
+                  ${tagEl.join('')}
+              </td>
+              <td>
+                  <span class="author">${author}</span>
+              </td>
+          </tr>
+          <tr><td><span class="incident-clips"><i class="fa fa-play" aria-hidden="true"></i></span></td></tr>
+      </table>
+      <div class="updates-container">
+        ${updatesHTML.join('')} <!-- Insert updates HTML here -->
+      </div>
+</div>
+`
     incidentsHTML += html;
 
   });
@@ -470,8 +490,8 @@ function createIncident() {
   const time = `${hours}:${minutes}`
 
   //initialize tags string to store selected tags
-  const tagsStr = selectedTags
-  tagsStr.push(defaultIncidentLevel, defaultIncidentState, defaultIncidentTime)
+  // const tagsStr = selectedTags
+  selectedTags.push(defaultIncidentLevel, defaultIncidentState, defaultIncidentTime)
   //create incident
   const incident = {
     title,
@@ -483,9 +503,8 @@ function createIncident() {
     author: displayName,
     time,
     updates: [],
-    createdAt:  serverTimestamp(),
+    createdAt: serverTimestamp(),
   }
-  console.log(selectedTags)
   const stagingDataColRef = collection(database, "incidents");
 
   addDoc(stagingDataColRef, incident)
@@ -495,7 +514,7 @@ function createIncident() {
     .catch((error) => {
       console.error("Error adding document: ", error);
     });
-resetState()
+  resetState()
 
 }
 
@@ -503,6 +522,7 @@ resetState()
 //handle click event to create new incident
 const submitButton = document.querySelector('.submit-btn')
 const updateButton = document.querySelector('.update-btn')
+const newIncidentTitle = document.querySelector('.new-incident-title')
 const submitButtonContainer = document.querySelector('.new-incident .submit-btn-container');
 const updateButtonContainer = document.querySelector('.new-incident .update-btn-container');
 submitButton.addEventListener('click', createIncident)
@@ -513,27 +533,27 @@ function editExisitingIncident() {
   incidentContainers.forEach(container => {
     container.addEventListener('click', () => {
       document.querySelector('.clear-incident-form').classList.remove('hidden')
-
+      container.focus()
       if (!submitButtonisCollapsed) {
         submitButtonContainer.style.width = '0px';
         updateButtonContainer.style.width = '100%'
         submitButtonisCollapsed = !submitButtonisCollapsed;
       }
-
-      const updatesContainer = container.querySelector('.updates-container');
-      if (updatesContainer.classList.contains('show-updates')){
-        updatesContainer.classList.remove('show-updates')
-      }else{
-        updatesContainer.classList.add('show-updates')
-
-      }
-      
-
-
       const { dataset: { incidentId } } = container;
       matchingIncident = localeStagingData.find((incident) => incident.id === incidentId)
 
-      const { title, update, address, clip, tags, author, date, time } = matchingIncident;
+      const { title, updates, address, clip, tags, author, date, time } = matchingIncident;
+      newIncidentTitle.innerHTML = `Update: ${title}`
+
+      if (updates.length > 0) {
+        const updatesContainer = container.querySelector('.updates-container');
+        if (updatesContainer.classList.contains('show-updates')) {
+          updatesContainer.classList.remove('show-updates')
+        } else {
+          updatesContainer.classList.add('show-updates')
+
+        }
+      }
       // Populate input fields with incident details
       addressInput.value = address;
       titleInput.value = title;
@@ -542,6 +562,7 @@ function editExisitingIncident() {
       // Update the selected tags
       const excludedItems = ['active', 'reported', 'medium', 'debunked', 'responded', 'low', 'high', 'past', 'future'];
       selectedTags = tags.filter(tag => !excludedItems.includes(tag)).slice();
+      console.log(selectedTags)
       // Update the UI to reflect the selected tags
       updateTagsDisplay();
     });
@@ -566,6 +587,8 @@ function publishUpdate() {
   const date = `${month}/${day}`;
   const time = `${hours}:${minutes}`;
 
+
+  selectedTags.push(defaultIncidentLevel, defaultIncidentState, defaultIncidentTime)
   const updateIncident = {
     title: titleInput.value,
     update: updateText,
@@ -573,7 +596,7 @@ function publishUpdate() {
     date,
     clip: 'SB194WcCSq0YkSQ',
     tags: selectedTags.slice(), // Copy selected tags
-    author: 'McClain',
+    author: displayName,
     time,
     createdAt: Timestamp.now(),
 
@@ -606,7 +629,7 @@ function resetState() {
     submitButtonisCollapsed = !submitButtonisCollapsed;
   }
   document.querySelector('.clear-incident-form').classList.add('hidden')
-
+  newIncidentTitle.innerHTML = "New Incident"
 }
 
 document.querySelector('.clear-incident-form').addEventListener('click', resetState)
@@ -616,3 +639,4 @@ document.addEventListener('keydown', (event) => {
     resetState()
   }
 })
+
