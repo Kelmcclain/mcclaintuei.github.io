@@ -70,6 +70,13 @@ body {
 
 }
 
+#utc-time{
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--text-color-light);
+    padding: 10px;
+}
+
 /* loading screen animation */
 #loading-screen {
     position: fixed;
@@ -87,11 +94,11 @@ body {
   #loading-screen p{
     font-size: 16px;
     font-weight: 400;
-    color: var(--accent-color);
+    color: white;
   }
   
   .loader {
-    border: 5px solid var(--secondary-color);
+    border: 5px solid white;
     border-top: 4px solid var(--primary-color);
     border-radius: 50%;
     width: 50px;
@@ -107,10 +114,13 @@ body {
 
 
 #leading {
+    display: flex;
     height: 60px;
     width: 100%;
     background-color: var(--secondary-color);
     position: relative;
+    align-items: center;
+    justify-content: center;
 }
 
 #leading .logout {
@@ -340,6 +350,12 @@ color: gray;
 
 }
 
+
+.incident-container table {
+    width: 100%;
+}
+
+
 .incident-container.table-row {
     vertical-align: top;
 }
@@ -412,8 +428,8 @@ color: gray;
 }
 
 .incident-container .table-row .author {
-    display: block;
-    justify-content: stretch;
+    display: flex;
+    justify-content: flex-end;
     align-content: flex-end;
     font-weight: 400;
     color: rgb(188, 193, 214);

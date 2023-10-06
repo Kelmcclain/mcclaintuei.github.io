@@ -44,7 +44,7 @@ if (currentPage == '/auth/register.html') {
 
 function register() {
     // Get all input fields
-    const full_name = document.getElementById('full_name').value;
+    const username = document.getElementById('username').value;
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
@@ -52,9 +52,15 @@ function register() {
         alert('Email & Password Are Required');
         return;
     }
-    if (validate_field(full_name) == false) {
+    if (validate_field(username) == false) {
         alert('Name is required');
         return;
+    }
+
+    var regex = /^[A-Za-z]+$/;
+    if (!regex.test(username)) {
+        alert("Username must be one word with no numbers, space or special characters.");
+        return; 
     }
 
     createUserWithEmailAndPassword(auth, email, password)
@@ -62,19 +68,19 @@ function register() {
             const user = userCredential.user;
             const uid = user.uid;
             updateProfile(user, {
-                displayName: full_name
+                displayName: username
             })
             const userRef = doc(database, 'users', uid); // Create a Firestore document reference
 
             const user_data = {
                 email: email,
-                full_name: full_name,
+                username: username,
                 last_login: Date.now()
             };
 
             setDoc(userRef, user_data)
                 .then(() => {
-                    alert('User Created');
+                    alert('Account Created');
                     window.location.href = '/'
                 })
                 .catch((error) => {
@@ -178,7 +184,7 @@ checkUserAuthStatus((isUserLoggedIn) => {
 
 
 
-if (currentPage == '/' || currentPage == '/index.html' ) {
+if (currentPage == '/' || currentPage == '/index.html') {
     document.querySelector('.logout').addEventListener('click', logout);
 }
 // Log the user out
@@ -235,7 +241,7 @@ if (currentPage == '/profile.html') {
         .addEventListener('click', (e) => {
             e.preventDefault()
             validateForm()
-            
+
 
         })
 }

@@ -47,6 +47,10 @@ onSnapshot(q, (snapshot) => {
 
   })
   renderIncidents(stagingData)
+  console.log(stagingData)
+  console.log(localeStagingData)
+
+
 })
 
 onAuthStateChanged(auth, (user) => {
@@ -260,11 +264,16 @@ function renderIncidents(data) {
             <td class="tag-container">                                
                 ${tagEl.join('')}
             </td>
-            <td>
+            
+        </tr>
+        <tr>
+          <td>
+          <span class="incident-clips"><i class="fa fa-play" aria-hidden="true"></i></span>
+          </td>
+          <td>
                 <span class="author">${update.author}</span>
             </td>
         </tr>
-        <tr><td><span class="incident-clips"><i class="fa fa-play" aria-hidden="true"></i></span></td></tr>
         </table>
 
         `);
@@ -287,11 +296,16 @@ function renderIncidents(data) {
               <td class="tag-container">                                
                   ${tagEl.join('')}
               </td>
+              
+          </tr>
+          <tr>
               <td>
-                  <span class="author">${author}</span>
+                  <span class="incident-clips"><i class="fa fa-play" aria-hidden="true"></i></span>
+              </td>
+              <td>
+                    <span class="author">${author}</span>
               </td>
           </tr>
-          <tr><td><span class="incident-clips"><i class="fa fa-play" aria-hidden="true"></i></span></td></tr>
       </table>
       <div class="updates-container">
         ${updatesHTML.join('')} <!-- Insert updates HTML here -->
@@ -539,13 +553,10 @@ function editExisitingIncident() {
         updateButtonContainer.style.width = '100%'
         submitButtonisCollapsed = !submitButtonisCollapsed;
       }
-      const { dataset: { incidentId } } = container;
-      matchingIncident = localeStagingData.find((incident) => incident.id === incidentId)
 
-      const { title, updates, address, clip, tags, author, date, time } = matchingIncident;
-      newIncidentTitle.innerHTML = `Update: ${title}`
-
-      if (updates.length > 0) {
+      //Get the value of updates count from DOM
+      const incidentUpdatesCount = Number(container.querySelector('.incident-update-count').innerHTML)
+      if (incidentUpdatesCount > 0) {
         const updatesContainer = container.querySelector('.updates-container');
         if (updatesContainer.classList.contains('show-updates')) {
           updatesContainer.classList.remove('show-updates')
@@ -554,15 +565,18 @@ function editExisitingIncident() {
 
         }
       }
+      //Find matching incident from local db
+      const { dataset: { incidentId } } = container;
+      matchingIncident = localeStagingData.find((incident) => incident.id === incidentId)
+      const { title, address, tags } = matchingIncident;
+      newIncidentTitle.innerHTML = `Update: ${title}`
       // Populate input fields with incident details
       addressInput.value = address;
       titleInput.value = title;
-      updateInput.value = ''; // Clear the update input field
-
+      updateInput.value = ''; 
       // Update the selected tags
       const excludedItems = ['active', 'reported', 'medium', 'debunked', 'responded', 'low', 'high', 'past', 'future'];
       selectedTags = tags.filter(tag => !excludedItems.includes(tag)).slice();
-      console.log(selectedTags)
       // Update the UI to reflect the selected tags
       updateTagsDisplay();
     });
@@ -611,6 +625,7 @@ function publishUpdate() {
     .catch((error) => {
       console.error('Error adding object to the array: ', error);
     });
+    
   console.log('update published')
   // Clear input fields and selected tags
   resetState()
