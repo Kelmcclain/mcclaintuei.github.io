@@ -33,9 +33,8 @@ let userUid;
 let displayName
 
 let localeStagingData = []
+
 // Listen for changes in authentication state
-
-
 const incidentsColRef = collection(database, "incidents");
 const q = query(incidentsColRef, orderBy('createdAt', 'asc'))
 //render records to UI
@@ -44,13 +43,8 @@ onSnapshot(q, (snapshot) => {
   snapshot.docs.forEach((doc) => {
     stagingData.push({ ...doc.data(), id: doc.id });
     localeStagingData.push({ ...doc.data(), id: doc.id });
-
   })
   renderIncidents(stagingData)
-  console.log(stagingData)
-  console.log(localeStagingData)
-
-
 })
 
 onAuthStateChanged(auth, (user) => {
@@ -75,7 +69,10 @@ document.querySelector('.profile').addEventListener('click', () => {
 let waveforms = [];
 let activeIndex = -1;
 let activeClipId = null;
+let selectedClipsIds = [];
 
+
+//Create Audio waveforms
 function createWaveform(audioCardId, audioUrl, clipId) {
   const container = document.getElementById(audioCardId);
   const wavesurfer = WaveSurfer.create({
@@ -105,7 +102,8 @@ function activateWaveform(wavesurfer) {
   }
   wavesurfer.play();
   activeIndex = waveforms.indexOf(wavesurfer);
-  activeClipId = wavesurfer.audioCardId; // Assuming you have a property named "clipId" for each waveform
+  activeClipId = wavesurfer.audioCardId;
+  activeClipId = wavesurfer.getDuration(); // Get the clipId property from the WaveSurfer instance
 }
 
 document.addEventListener('keydown', (event) => {
@@ -191,6 +189,105 @@ audioFiles.forEach((file) => {
   audioCard.dataset.audioUrl = audioUrl;
 
   audioCard.append(clipPrecinct, clipDuration, clipTalkGroup, timeStamp)
+})
+
+
+
+//Handle addding clips to incident form
+document.addEventListener('keydown', (event) => {
+  const focusedElement = document.activeElement;
+  if (
+    (focusedElement.tagName !== 'INPUT' &&
+      focusedElement.tagName !== 'TEXTAREA') ||
+    (focusedElement.tagName === 'INPUT' && focusedElement.type !== 'text')
+  ) {
+    if (event.key === 'f') { // Check for the 'f' keypress
+      event.preventDefault();
+      if (activeIndex !== -1) {
+        const activeWaveform = waveforms[activeIndex];
+        const activeClipId = activeWaveform.renderer.parent.id;
+        if (!selectedClipsIds.includes(activeClipId)) {
+          selectedClipsIds.push(activeClipId);
+          console.log(selectedClipsIds)
+
+        }
+        const flaggesClipDisplay = document.querySelector('.clip-icon-display')
+        let HTMLArray = []
+        selectedClipsIds.forEach((audioId) => {
+          const matchingAudio = audioFiles.find((file) => file.clipId === audioId);
+          const { url } = matchingAudio
+
+          let templateHTML = `
+          <div class="audio-player" id="${audioId}">
+          <span class="incident-clips flagged-clip"><i id="audio-toggle" class="fa fa-play" aria-hidden="true"></i> <p id="remove-clip">X</p>
+          </span>
+          <audio id="audio-element" src="${url}" preload="auto"></audio>
+          </div>
+
+         `
+          HTMLArray += templateHTML
+        })
+        flaggesClipDisplay.innerHTML = HTMLArray
+
+        const audioPlayer = document.querySelectorAll('.audio-player');
+        let currentlyPlaying = null; // Store the currently playing audio element
+
+        audioPlayer.forEach((player) => {
+          const audioToggle = player.querySelector('#audio-toggle');
+          const audioElement = player.querySelector('#audio-element');
+
+          audioToggle.addEventListener('click', () => {
+            if (audioElement !== currentlyPlaying) {
+              // Pause the currently playing audio (if any)
+              if (currentlyPlaying) {
+                currentlyPlaying.pause();
+                // Reset the icon for the previously playing audio
+                const prevAudioToggle = currentlyPlaying.parentElement.querySelector('#audio-toggle');
+                prevAudioToggle.classList.remove('fa-pause');
+                prevAudioToggle.classList.add('fa-play');
+              }
+
+              // Set the new audio as the currently playing one
+              currentlyPlaying = audioElement;
+            }
+
+            if (audioElement.paused) {
+              audioElement.play();
+              audioToggle.classList.remove('fa-play');
+              audioToggle.classList.add('fa-pause');
+            } else {
+              audioElement.pause();
+              audioToggle.classList.remove('fa-pause');
+              audioToggle.classList.add('fa-play');
+            }
+          });
+
+          audioElement.addEventListener('ended', () => {
+            audioToggle.classList.remove('fa-pause');
+            audioToggle.classList.add('fa-play');
+          });
+        });
+
+      }
+    }
+  }
+});
+
+//Handle Removing selected clips from form
+document.querySelector('.clip-icon-display').addEventListener('click', (event) => {
+  const clickedElement = event.target;
+  if (clickedElement.id === 'remove-clip') {
+    const audioPlayer = clickedElement.closest('.audio-player');
+    if (audioPlayer) {
+      audioPlayer.remove();
+      const removedAudioId = audioPlayer.id;
+      const indexToRemove = selectedClipsIds.indexOf(removedAudioId);
+      if (indexToRemove !== -1) {
+        selectedClipsIds.splice(indexToRemove, 1);
+        console.log(selectedClipsIds)
+      }
+    }
+  }
 });
 
 
@@ -248,7 +345,25 @@ function renderIncidents(data) {
         const tagHTML = `<span class="tag">${item}</span>`
         tagEl.push(tagHTML)
       })
-      // Generate HTML for each update based on your desired format
+
+      let UpdateClipHTMLArray = []
+      update.clip.forEach((audioId) => {
+        const matchingAudio = audioFiles.find((file) => file.clipId === audioId);
+        const { url } = matchingAudio
+
+        let templateHTML = `
+      <div class="audio-player">
+
+      <span class="incident-clips flagged-clip"><i id="audio-toggle" class="fa fa-play" aria-hidden="true"></i></span>
+      <audio id="audio-element" src="${url}" preload="auto"></audio>
+      </div>
+
+     `
+        UpdateClipHTMLArray += templateHTML
+
+      })
+
+      // Generate HTML for each update 
       updatesHTML.push(`
       <table>
 
@@ -268,7 +383,9 @@ function renderIncidents(data) {
         </tr>
         <tr>
           <td>
-          <span class="incident-clips"><i class="fa fa-play" aria-hidden="true"></i></span>
+          <div class="incident-clips-display">
+          ${UpdateClipHTMLArray}
+            </div>
           </td>
           <td>
                 <span class="author">${update.author}</span>
@@ -278,6 +395,23 @@ function renderIncidents(data) {
 
         `);
     });
+    let HTMLArray = []
+
+    clip.forEach((audioId) => {
+      const matchingAudio = audioFiles.find((file) => file.clipId === audioId);
+      const { url } = matchingAudio
+
+      let templateHTML = `
+      <div class="audio-player">
+
+      <span class="incident-clips flagged-clip"><i id="audio-toggle" class="fa fa-play" aria-hidden="true"></i></span>
+      <audio id="audio-element" src="${url}" preload="auto"></audio>
+      </div>
+
+     `
+      HTMLArray += templateHTML
+
+    })
 
     let html = `
     <div class="incident-container" style="background:${levelStyling}" data-incident-id="${id}">
@@ -300,7 +434,9 @@ function renderIncidents(data) {
           </tr>
           <tr>
               <td>
-                  <span class="incident-clips"><i class="fa fa-play" aria-hidden="true"></i></span>
+              <div class="incident-clips-display">
+              ${HTMLArray}
+                </div>
               </td>
               <td>
                     <span class="author">${author}</span>
@@ -324,14 +460,53 @@ function renderIncidents(data) {
     }
   })
 
+  const audioPlayer = document.querySelectorAll('.audio-player');
+  let currentlyPlaying = null; // Store the currently playing audio element
+
+  audioPlayer.forEach((player) => {
+    const audioToggle = player.querySelector('#audio-toggle');
+    const audioElement = player.querySelector('#audio-element');
+
+    audioToggle.addEventListener('click', () => {
+      if (audioElement !== currentlyPlaying) {
+        // Pause the currently playing audio (if any)
+        if (currentlyPlaying) {
+          currentlyPlaying.pause();
+          // Reset the icon for the previously playing audio
+          const prevAudioToggle = currentlyPlaying.parentElement.querySelector('#audio-toggle');
+          prevAudioToggle.classList.remove('fa-pause');
+          prevAudioToggle.classList.add('fa-play');
+        }
+
+        // Set the new audio as the currently playing one
+        currentlyPlaying = audioElement;
+      }
+
+      if (audioElement.paused) {
+        audioElement.play();
+        audioToggle.classList.remove('fa-play');
+        audioToggle.classList.add('fa-pause');
+      } else {
+        audioElement.pause();
+        audioToggle.classList.remove('fa-pause');
+        audioToggle.classList.add('fa-play');
+      }
+    });
+
+    audioElement.addEventListener('ended', () => {
+      audioToggle.classList.remove('fa-pause');
+      audioToggle.classList.add('fa-play');
+    });
+  });
+
   editExisitingIncident()
 }
 
 //Global Variables
 let submitButtonisCollapsed = false;
 let defaultIncidentState = 'reported';
-let defaultIncidentLevel = 'medium';
 let defaultIncidentTime = 'active';
+let defaultIncidentLevel = 'medium';
 let matchingIncident = null; // Define it in a higher scope
 
 
@@ -450,12 +625,6 @@ function updateTagsDisplay() {
 const addressInput = document.querySelector('#address');
 const titleInput = document.querySelector('#caption-input');
 const updateInput = document.querySelector('#description-input');
-const tags = document.querySelector('#tags').value;
-const fire = document.querySelector('#fire').value;
-const weather = document.querySelector('#weather').value;
-const crime = document.querySelector('#crime').value;
-const traffic = document.querySelector('#traffic').value;
-const misc = document.querySelector('#misc').value;
 //Create new incident
 let isNewIncident = true; // Flag to indicate whether it's a new incident or an update
 
@@ -505,14 +674,14 @@ function createIncident() {
 
   //initialize tags string to store selected tags
   // const tagsStr = selectedTags
-  selectedTags.push(defaultIncidentLevel, defaultIncidentState, defaultIncidentTime)
+  selectedTags.push(defaultIncidentState, defaultIncidentTime,defaultIncidentLevel)
   //create incident
   const incident = {
     title,
     update,
     address,
     date,
-    clip: 'SB194WcCSq0YkSQ',
+    clip: selectedClipsIds,
     tags: selectedTags,
     author: displayName,
     time,
@@ -530,6 +699,13 @@ function createIncident() {
     });
   resetState()
 
+  // Clear the selectedClipsIds array
+  selectedClipsIds.length = 0;
+  // Remove all elements with the class 'audio-player' from the DOM
+  const audioPlayers = document.querySelectorAll('.audio-player');
+  audioPlayers.forEach((player) => {
+    player.remove();
+  });
 }
 
 
@@ -558,11 +734,8 @@ function editExisitingIncident() {
       const incidentUpdatesCount = Number(container.querySelector('.incident-update-count').innerHTML)
       if (incidentUpdatesCount > 0) {
         const updatesContainer = container.querySelector('.updates-container');
-        if (updatesContainer.classList.contains('show-updates')) {
-          updatesContainer.classList.remove('show-updates')
-        } else {
+        if (!updatesContainer.classList.contains('show-updates')) {
           updatesContainer.classList.add('show-updates')
-
         }
       }
       //Find matching incident from local db
@@ -573,7 +746,7 @@ function editExisitingIncident() {
       // Populate input fields with incident details
       addressInput.value = address;
       titleInput.value = title;
-      updateInput.value = ''; 
+      updateInput.value = '';
       // Update the selected tags
       const excludedItems = ['active', 'reported', 'medium', 'debunked', 'responded', 'low', 'high', 'past', 'future'];
       selectedTags = tags.filter(tag => !excludedItems.includes(tag)).slice();
@@ -602,13 +775,13 @@ function publishUpdate() {
   const time = `${hours}:${minutes}`;
 
 
-  selectedTags.push(defaultIncidentLevel, defaultIncidentState, defaultIncidentTime)
+  selectedTags.push(defaultIncidentState, defaultIncidentTime,defaultIncidentLevel)
   const updateIncident = {
     title: titleInput.value,
     update: updateText,
     address: addressInput.value,
     date,
-    clip: 'SB194WcCSq0YkSQ',
+    clip: selectedClipsIds,
     tags: selectedTags.slice(), // Copy selected tags
     author: displayName,
     time,
@@ -625,10 +798,17 @@ function publishUpdate() {
     .catch((error) => {
       console.error('Error adding object to the array: ', error);
     });
-    
+
   console.log('update published')
   // Clear input fields and selected tags
   resetState()
+    // Clear the selectedClipsIds array
+    selectedClipsIds.length = 0;
+    // Remove all elements with the class 'audio-player' from the DOM
+    const audioPlayers = document.querySelectorAll('.audio-player');
+    audioPlayers.forEach((player) => {
+      player.remove();
+    });
 }
 
 
@@ -645,6 +825,26 @@ function resetState() {
   }
   document.querySelector('.clear-incident-form').classList.add('hidden')
   newIncidentTitle.innerHTML = "New Incident"
+
+  // const classNameToSearch = "show-updates";
+  // const parentElement = document;
+  // const elementsWithClassName = parentElement.getElementsByClassName(classNameToSearch);
+  // if (elementsWithClassName.length > 0) {
+  //   for (var i = 0; i < elementsWithClassName.length; i++) {
+  //     var childElement = elementsWithClassName[i];
+  //     childElement.classList.remove("show-updates");
+  //   }
+  // }
+
+  const classNameToSearch = "show-updates";
+  const parentElement = document;
+  const elementsWithClassName = parentElement.getElementsByClassName(classNameToSearch);
+  
+  // Convert the HTMLCollection to an array and remove the class from all elements
+  Array.from(elementsWithClassName).forEach(element => {
+    element.classList.remove(classNameToSearch);
+  });
+  
 }
 
 document.querySelector('.clear-incident-form').addEventListener('click', resetState)
