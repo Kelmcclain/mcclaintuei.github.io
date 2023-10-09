@@ -674,7 +674,7 @@ function createIncident() {
 
   //initialize tags string to store selected tags
   // const tagsStr = selectedTags
-  selectedTags.push(defaultIncidentState, defaultIncidentTime,defaultIncidentLevel)
+  selectedTags.push(defaultIncidentState, defaultIncidentTime, defaultIncidentLevel)
   //create incident
   const incident = {
     title,
@@ -775,7 +775,7 @@ function publishUpdate() {
   const time = `${hours}:${minutes}`;
 
 
-  selectedTags.push(defaultIncidentState, defaultIncidentTime,defaultIncidentLevel)
+  selectedTags.push(defaultIncidentState, defaultIncidentTime, defaultIncidentLevel)
   const updateIncident = {
     title: titleInput.value,
     update: updateText,
@@ -798,17 +798,16 @@ function publishUpdate() {
     .catch((error) => {
       console.error('Error adding object to the array: ', error);
     });
-
   console.log('update published')
   // Clear input fields and selected tags
   resetState()
-    // Clear the selectedClipsIds array
-    selectedClipsIds.length = 0;
-    // Remove all elements with the class 'audio-player' from the DOM
-    const audioPlayers = document.querySelectorAll('.audio-player');
-    audioPlayers.forEach((player) => {
-      player.remove();
-    });
+  // Clear the selectedClipsIds array
+  selectedClipsIds.length = 0;
+  // Remove all elements with the class 'audio-player' from the DOM
+  const audioPlayers = document.querySelectorAll('.audio-player');
+  audioPlayers.forEach((player) => {
+    player.remove();
+  });
 }
 
 
@@ -826,25 +825,15 @@ function resetState() {
   document.querySelector('.clear-incident-form').classList.add('hidden')
   newIncidentTitle.innerHTML = "New Incident"
 
-  // const classNameToSearch = "show-updates";
-  // const parentElement = document;
-  // const elementsWithClassName = parentElement.getElementsByClassName(classNameToSearch);
-  // if (elementsWithClassName.length > 0) {
-  //   for (var i = 0; i < elementsWithClassName.length; i++) {
-  //     var childElement = elementsWithClassName[i];
-  //     childElement.classList.remove("show-updates");
-  //   }
-  // }
-
   const classNameToSearch = "show-updates";
   const parentElement = document;
   const elementsWithClassName = parentElement.getElementsByClassName(classNameToSearch);
-  
+
   // Convert the HTMLCollection to an array and remove the class from all elements
   Array.from(elementsWithClassName).forEach(element => {
     element.classList.remove(classNameToSearch);
   });
-  
+
 }
 
 document.querySelector('.clear-incident-form').addEventListener('click', resetState)
