@@ -11,12 +11,13 @@
         <h2>Update Profile</h2>
         <form id="profile-details">
             <div class="profile-container">
-                <div class="profile-picture"></div>
+                <div class="profile-picture">
+                </div>
             </div>
-            <input type="text" placeholder="Full Name" value="" required name="username" id="full_name">
-            <input type="text" placeholder="Username" value="" required name="username">
-            <input type="password" placeholder="New Password">
-            <input type="password" placeholder="Confirm Password">
+            <input type="text" placeholder="Username" value="" required name="username" id="username">
+            <input type="text" placeholder="Email" value="" required name="email" id="email">
+            <input type="password" disabled placeholder="New Password">
+            <input type="password" placeholder="Confirm Password" disabled name="password">
             <button id="submit-profile-update">Update</button>
         </form>
     </div>

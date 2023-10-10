@@ -29,6 +29,24 @@ h2 {
     color: var(--text-color-light);
 }
 
+button {
+    width: 100px;
+    padding: 10px 15px;
+    background: var(--accent-color);
+    color: var(--text-color-light);
+    border: 1px solid var(--accent-color);
+    border-radius: 10px;
+    margin-right: 10px;
+    transition: 0.3s ease;
+    cursor: pointer;
+    transition: .3s ease;
+}
+
+button:hover {
+    border: 1px solid lightblue;
+    background-color: #3e4563;
+}
+
 .login-form,
 .registration-form {
     align-items: center;
@@ -41,7 +59,34 @@ h2 {
     min-height: 20vh;
     border-radius: 10px;
     padding: 20px;
+    box-shadow:  -4px 4px 3px 0px rgb(42 45 69);
+    transition: .2s ease-in-out;
 
+}
+
+.login-form:hover,
+.registration-form:hover{
+}
+
+.login-form .login-btn,
+.registration-form .register{
+    width: 200px;
+}
+
+.login-form p,
+.registration-form p{
+    color: var(--text-color-light);
+}
+
+.login-form p span,
+.registration-form p span{
+    color: #5599aa;
+}
+
+.login-form p span:hover,
+.registration-form p span:hover{
+    color: #5599aa;
+    cursor: pointer;
 }
 
 input {
@@ -65,22 +110,7 @@ input:focus {
 
 }
 
-button {
-    width: 100px;
-    padding: 10px 15px;
-    background: var(--accent-color);
-    color: var(--text-color-light);
-    border: 1px solid var(--accent-color);
-    border-radius: 10px;
-    margin-right: 10px;
-    transition: 0.3s ease;
-    cursor: pointer;
-    transition: .3s ease;
-}
 
-button:hover {
-    border: 1px solid lightblue;
-}
 
 .profile-container{
     display: flex;
@@ -93,14 +123,20 @@ button:hover {
 .profile-picture{
     width: 100px;
     height: 100%;
-    background-color: var(--accent-color);
+    background-image: url(/images/profile.jpg);
     border: none;
     outline: none;
     border-radius: 50px;
+    background-position: center;
+    background-size: cover;
+    transition: .3s ease-in-out;
+    border: 2px solid var(--accent-color);
 }
 
 .profile-picture:hover{
-    background-image:  scale(1.1);
+    transform:  scale(1.02);
+    border: 2px solid var(--text-color-light);
+
 }
 
 #submit-profile-update{

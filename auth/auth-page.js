@@ -2,7 +2,8 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebas
 import { getFirestore, collection, getDocs, addDoc, setDoc, doc } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js";
 import {
     getAuth, createUserWithEmailAndPassword,
-    signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile
+    signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile,
+    sendEmailVerification, updatePassword, updateEmail
 } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
 
 const firebaseConfig = {
@@ -60,7 +61,7 @@ function register() {
     var regex = /^[A-Za-z]+$/;
     if (!regex.test(username)) {
         alert("Username must be one word with no numbers, space or special characters.");
-        return; 
+        return;
     }
 
     createUserWithEmailAndPassword(auth, email, password)
@@ -220,28 +221,41 @@ function validateForm() {
 }
 
 
-
+//Update User Profile | Fetch User Details and display
 if (currentPage == '/profile.html') {
     onAuthStateChanged(auth, (user) => {
         if (user) {
             const userUid = user.uid;
             console.log(`User is signed in with UID: ${userUid}`);
             const displayName = user.displayName
-
-
             const email = user.email;
             const photoURL = user.photoURL;
             const emailVerified = user.emailVerified;
             console.log(displayName, email, photoURL, emailVerified)
             const profileForm = document.querySelector('#profile-details')
-            profileForm.full_name.value = displayName
+            profileForm.username.value = displayName
+            profileForm.email.value = email
+
         }
     })
     document.querySelector('#submit-profile-update')
         .addEventListener('click', (e) => {
+            const profileForm = document.querySelector('#profile-details')
             e.preventDefault()
             validateForm()
-
-
+            updateProfile(auth.currentUser, {
+                displayName: profileForm.username.value, 
+            }).then(() => {
+                alert('Username updated')
+            }).catch((error) => {
+                console.log(error)
+            });
+            updateEmail(auth.currentUser, profileForm.email.value).then(() => {
+                alert('Email updated')
+              }).catch((error) => {
+                console.log(error)
+              });
         })
 }
+
+

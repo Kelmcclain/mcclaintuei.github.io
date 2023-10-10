@@ -260,6 +260,7 @@ body {
     font-size: 18px;
     padding: 10px;
     width: 20%;
+    cursor: pointer;
 }
 
 .search-bar input {
@@ -702,6 +703,10 @@ select option:hover {
     align-items: center;
     justify-content: space-between;
 }
+.new-incident-form .alert-btns .alert-btn:hover{
+    background-color:  #323b5a;
+}
+
 
 
 .new-incident-form .alert-btns .alert-btn,
@@ -718,6 +723,7 @@ select option:hover {
     width: 99%;
     cursor: pointer;
     transition: .2s ease-in-out;
+
 }
 
 

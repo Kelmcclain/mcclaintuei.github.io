@@ -844,3 +844,25 @@ document.addEventListener('keydown', (event) => {
   }
 })
 
+document.querySelector('#search-item').addEventListener('keyup', (event) => {
+  event.stopPropagation();
+  console.log(event.key)
+  const searchbox = document.querySelector('#search-item').value.toUpperCase();
+  const searchIncidents = document.querySelectorAll('.incident-container');
+  
+  for (let i = 0; i < searchIncidents.length; i++) {
+    let match = searchIncidents[i].getElementsByTagName('span')[0];
+    
+    if (match) {
+      let textValue = match.textContent || match.innerHTML;
+      console.log(textValue)
+      
+      if (textValue.toUpperCase().indexOf(searchbox) > -1) {
+        searchIncidents[i].style.display = ""; // Display the matching incident
+      } else {
+        searchIncidents[i].style.display = "none"; // Hide the non-matching incident
+      }
+    }
+  }
+})
+
