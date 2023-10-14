@@ -294,7 +294,7 @@ document.querySelector('.clip-icon-display').addEventListener('click', (event) =
 function renderIncidents(data) {
   const incidentsElement = document.querySelector('#incidents');
   let incidentsHTML = [];
-  data.forEach(incident => {
+  data.forEach((incident, ind) => {
     // Extract incident details
     let { id, title, update, updates, address, clip, tags, author, date, time } = incident;
     let index = updates.length - 1
@@ -413,8 +413,10 @@ function renderIncidents(data) {
 
     })
 
+
+
     let html = `
-    <div class="incident-container" style="background:${levelStyling}" data-incident-id="${id}">
+    <div class="incident-container" tabindex="${ind}" style="background:${levelStyling}" data-incident-id="${id}">
       <div class="incident-update-count">${updatesCount}</div>
 
       <table>
@@ -723,12 +725,14 @@ function editExisitingIncident() {
   incidentContainers.forEach(container => {
     container.addEventListener('click', () => {
       document.querySelector('.clear-incident-form').classList.remove('hidden')
-      container.focus()
+      // container.focus();
       if (!submitButtonisCollapsed) {
         submitButtonContainer.style.width = '0px';
         updateButtonContainer.style.width = '100%'
         submitButtonisCollapsed = !submitButtonisCollapsed;
       }
+      console.log(container)
+      // container.style.background = "#2d3542";
 
       //Get the value of updates count from DOM
       const incidentUpdatesCount = Number(container.querySelector('.incident-update-count').innerHTML)
@@ -744,6 +748,7 @@ function editExisitingIncident() {
       const { title, address, tags } = matchingIncident;
       newIncidentTitle.innerHTML = `Update: ${title}`
       // Populate input fields with incident details
+      updateInput.style.border = ''
       addressInput.value = address;
       titleInput.value = title;
       updateInput.value = '';
@@ -761,6 +766,7 @@ function publishUpdate() {
   const updateText = updateInput.value.trim()
 
   if (updateText === '') {
+    updateInput.style.border = '1px solid red'
     return;
   }
   // Create a new incident object for the update
@@ -833,6 +839,7 @@ function resetState() {
   Array.from(elementsWithClassName).forEach(element => {
     element.classList.remove(classNameToSearch);
   });
+ 
 
 }
 

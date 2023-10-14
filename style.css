@@ -261,6 +261,7 @@ body {
     padding: 10px;
     width: 20%;
     cursor: pointer;
+    color: #5f677a
 }
 
 .search-bar input {
@@ -291,13 +292,22 @@ body {
     transition: 0.2s ease;
     overflow: hidden;
     border: 2px solid rgb(50, 57, 75);
+    outline: none;
 
 }
+
 .incident-container:hover {
     border: 2px solid rgb(84, 96, 128);
 
-    }
-    
+}
+
+/* .incident-container:focus {
+    background-color: #2d3542;
+    border: 2px solid rgb(84, 96, 128);
+
+
+} */
+
 .incident-update-count {
     display: flex;
     position: absolute;
@@ -449,7 +459,7 @@ body {
 
 }
 
-.incident-clips-display  {
+.incident-clips-display {
     display: flex;
 }
 
@@ -496,16 +506,16 @@ body {
 
 /*  */
 
-.clip-icon-display  {
+.clip-icon-display {
     display: flex;
 }
 
-.incident-clips{
+.incident-clips {
     margin-right: 5px;
 
 }
 
-.clip-icon-display .audio-player p{
+.clip-icon-display .audio-player p {
     font-size: 12px;
     color: rgb(214, 186, 186);
     font-weight: bold;
@@ -522,7 +532,7 @@ body {
 
 
 
-.clip-icon-display .incident-clips{
+.clip-icon-display .incident-clips {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -532,8 +542,8 @@ body {
 
 .clip-icon-display .incident-clips i {
     color: #317bcf;
-    border-top-right-radius:0 ;
-    border-bottom-right-radius:0 ;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
 
 }
 
@@ -544,12 +554,13 @@ body {
 
 #new-incident-column .new-incident-title {
     padding: 5px;
+    width: 30px;
     margin-top: 5px;
     margin-left: 5px;
     font-weight: bold;
     font-size: 14px;
     white-space: nowrap;
-    overflow: hidden;
+    overflow: initial;
     text-overflow: ellipsis;
 }
 
@@ -605,6 +616,7 @@ body {
 }
 
 .new-incident-form #description-input {
+    border: 1px solid var(--secondary-color);
     height: 7vh;
 }
 
@@ -703,8 +715,9 @@ select option:hover {
     align-items: center;
     justify-content: space-between;
 }
-.new-incident-form .alert-btns .alert-btn:hover{
-    background-color:  var(--secondary-color);
+
+.new-incident-form .alert-btns .alert-btn:hover {
+    background-color: var(--secondary-color);
 }
 
 
@@ -774,7 +787,7 @@ select option:hover {
 .new-incident-form .alert-btns .state.active,
 .new-incident-form .alert-btns .level.active,
 .new-incident-form .alert-btns .time.active {
-    background-color:rgb(35, 68, 105);
+    background-color: rgb(35, 68, 105);
     transition: .3s ease-in-out;
 
 }
@@ -799,5 +812,3 @@ select option:hover {
 .hidden {
     display: none;
 }
-
-
