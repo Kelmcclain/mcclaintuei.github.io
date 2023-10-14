@@ -323,9 +323,9 @@ function renderIncidents(data) {
 
     tags.forEach((tag) => {
       if (tag === 'low') {
-        levelStyling = 'linear-gradient(45deg, var(--secondary-color), #576f7e);'
+        levelStyling = 'linear-gradient(45deg, var(--secondary-color), #37434b);'
       } else if (tag === 'high') {
-        levelStyling = 'linear-gradient(45deg, var(--secondary-color), #413f86);'
+        levelStyling = 'linear-gradient(45deg, var(--secondary-color), #283a64);'
 
       }
     })

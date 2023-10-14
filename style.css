@@ -7,11 +7,11 @@
 }
 
 :root {
-    --primary-color: #191f35;
-    --secondary-color: #262d47;
-    --accent-color: #454c67;
+    --primary-color: #181b20;
+    --secondary-color: #1f242b;
+    --accent-color: #242931;
     --text-color-dark: #2f2e2e;
-    --text-color-light: #cfd7e0;
+    --text-color-light: #afb5bd;
 
 }
 
@@ -43,7 +43,7 @@ body::-webkit-scrollbar-thumb,
 #incident-column::-webkit-scrollbar-thumb,
 #new-incident-column::-webkit-scrollbar-thumb,
 textarea::-webkit-scrollbar-thumb {
-    background: rgb(89, 118, 144);
+    background: #545b69;
     border-radius: 6px;
 }
 
@@ -54,7 +54,7 @@ body::-webkit-scrollbar-thumb:hover,
 #incident-column::-webkit-scrollbar-thumb:hover,
 #new-incident-column::-webkit-scrollbar-thumb:hover,
 textarea::-webkit-scrollbar-thumb:hover {
-    background: rgb(136, 180, 218);
+    background: #737c8f;
 }
 
 
@@ -280,31 +280,36 @@ body {
 
 .incident-container {
     position: relative;
-    background: linear-gradient(45deg, var(--secondary-color), var(--accent-color));
-    margin: 15px 15px 0px 15px;
+    background: var(--secondary-color);
+    margin: 8px 15px 0px 15px;
     padding: 5px;
-    color: #665050;
+    color: #505666;
     border-radius: 5px;
     color: var(--text-color-light);
-    box-shadow: -3px 3px 9px 0px rgb(138 164 255 / 30%);
+    /* box-shadow: -3px 3px 9px 0px rgb(138 164 255 / 30%); */
     cursor: pointer;
-    transition: 0.3s ease-in-out;
+    transition: 0.2s ease;
     overflow: hidden;
+    border: 2px solid rgb(50, 57, 75);
 
 }
+.incident-container:hover {
+    border: 2px solid rgb(84, 96, 128);
 
+    }
+    
 .incident-update-count {
     display: flex;
     position: absolute;
     font-weight: 500;
     right: 5px;
     top: 50%;
-    background-color: #262d47;
+    background-color: #d1d4df;
     align-items: center;
     justify-content: center;
     width: 20px;
     height: 20px;
-    color: var(--text-color-light);
+    color: var(--text-color-dark);
     border-radius: 10px;
 }
 
@@ -352,12 +357,6 @@ body {
 }
 
 
-.incident-container:hover {
-    box-shadow: -3px 3px 9px 0px rgba(255, 255, 255, 0.3);
-
-}
-
-
 .incident-container table {
     width: 100%;
 }
@@ -371,22 +370,25 @@ body {
     display: inline-block;
     font-size: 15px;
     font-weight: 600;
-    color: rgba(247, 170, 71, 0.774);
     padding-bottom: 5px;
 }
 
 .incident-container .table-row .caption {
     display: inline-block;
     padding-bottom: 10px;
-    color: rgb(190, 204, 216);
+    color: var(--text-color-light);
     min-width: 100%;
     max-width: 300px;
+    font-weight: 400;
+
 }
 
 .incident-container .table-row .address {
     display: inline-block;
     padding-bottom: 5px;
-    color: rgb(91, 140, 203);
+    color: #0779bb;
+    font-weight: 450;
+
 }
 
 .incident-container .table-row .time {
@@ -409,7 +411,7 @@ body {
 
 .incident-container .table-row .tag-container .tag {
     display: inline-block;
-    background-color: #454c67;
+    background-color: #303549;
     font-size: 10px;
     padding: 3px;
     border-radius: 5px;
@@ -418,7 +420,7 @@ body {
     font-weight: bold;
 }
 
-.incident-container .table-row .tag-container .tag:nth-child(1) {
+/* .incident-container .table-row .tag-container .tag:nth-child(1) {
     color: rgb(197, 194, 194);
 }
 
@@ -436,7 +438,7 @@ body {
 
 .incident-container .table-row .tag-container .tag:nth-last-child(1) {
     color: rgb(199, 164, 231);
-}
+} */
 
 .incident-container .table-row .author {
     display: flex;
@@ -454,7 +456,7 @@ body {
 .incident-clips i {
     padding: 3px 5px;
     transition: .3s ease;
-    color: #707aa5;
+    color: #14a4f7;
     background: #454c67;
     border-radius: 5px;
 
@@ -517,9 +519,7 @@ body {
     border-radius: 2px;
 }
 
-.clip-icon-display .audio-player p:hover{
-color: #b64a4a;
-}
+
 
 
 .clip-icon-display .incident-clips{
@@ -531,7 +531,7 @@ color: #b64a4a;
 }
 
 .clip-icon-display .incident-clips i {
-    color: #5ba0ac;
+    color: #317bcf;
     border-top-right-radius:0 ;
     border-bottom-right-radius:0 ;
 
@@ -561,7 +561,7 @@ color: #b64a4a;
 
 .new-incident-form input {
     padding: 7px 6px;
-    background-color: #5489c3;
+    background-color: #35506d;
     border: none;
     outline: none;
     border-radius: 5px;
@@ -592,7 +592,7 @@ color: #b64a4a;
     margin-bottom: 15px;
     font-size: 14px;
     resize: none;
-    transition: 0.3s ease;
+    transition: 0.2s ease;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
 }
@@ -600,7 +600,7 @@ color: #b64a4a;
 .new-incident-form input:focus,
 .new-incident-form #caption-input:focus,
 #description-input:focus {
-    box-shadow: 0px 0px 9px 0px rgb(138 164 255 / 53%);
+    box-shadow: 0px 0px 9px 0px rgba(92, 100, 124, 0.53);
 
 }
 
@@ -704,7 +704,7 @@ select option:hover {
     justify-content: space-between;
 }
 .new-incident-form .alert-btns .alert-btn:hover{
-    background-color:  #323b5a;
+    background-color:  var(--secondary-color);
 }
 
 
@@ -712,7 +712,7 @@ select option:hover {
 .new-incident-form .alert-btns .alert-btn,
 .new-incident-form .submit-btn,
 .new-incident-form .update-btn {
-    background-color: var(--accent-color);
+    background-color: #2b323c;
     color: var(--text-color-light);
     overflow: hidden;
     padding: 10px;
@@ -744,7 +744,7 @@ select option:hover {
 }
 
 .new-incident-form .update-btn {
-    background-color: rgb(45, 118, 161);
+    background-color: rgb(35, 68, 105);
 }
 
 .new-incident-form .alert-btns .alert-btn:nth-child(1) {
@@ -774,7 +774,7 @@ select option:hover {
 .new-incident-form .alert-btns .state.active,
 .new-incident-form .alert-btns .level.active,
 .new-incident-form .alert-btns .time.active {
-    background-color: rgb(45, 118, 161);
+    background-color:rgb(35, 68, 105);
     transition: .3s ease-in-out;
 
 }
