@@ -23,5 +23,17 @@ document.addEventListener('DOMContentLoaded', function () {
     updateUTC();
     setInterval(updateUTC, 1000);
 }
-
 displayUTCTime();
+let isProfileMenuVisible = false;
+document.querySelector('.profile-icon-container')
+.addEventListener('click', ()=>{
+  const profileMenu = document.querySelector('.profile-popup')
+  if (isProfileMenuVisible){
+    profileMenu.style.height = "0px"
+  }else{
+    profileMenu.style.height = "7rem"
+  }
+   isProfileMenuVisible = !isProfileMenuVisible;
+
+})
+

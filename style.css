@@ -123,33 +123,51 @@ body {
     display: flex;
     height: 7vh;
     min-height: 40px;
+    padding-right: 10px;
     width: 100%;
     background-color: var(--secondary-color);
     position: relative;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
 }
 
-#leading .logout {
-    position: absolute;
-    top: 40%;
-    right: 10px;
-    font-size: 16px;
-    cursor: pointer;
-}
 
-#leading .profile {
-    position: absolute;
-    top: 40%;
-    right: 50px;
-    font-size: 18px;
+#leading .profile-icon-container {
+    position: relative;
     cursor: pointer;
     transition: .2s ease-in-out;
 }
 
-#leading .profile:hover {
-    color: gray;
+#leading .profile-icon-container i {
+    font-size: 16px;
+    margin: 0px 10px;
+    color: #5a6b81;
 }
+
+#leading .profile-icon-container .profile-popup {
+    display: block;
+    background-color: #e0e4eb;
+    /* border: 1px solid rgb(105, 126, 146); */
+    border-radius: 5px;
+    position: absolute;
+    right: 5px;
+    width: 7rem;
+    height: 0;
+    z-index: 1000;
+    padding: 0px 5px;
+    overflow: hidden;
+    transition: .1s ease-in;
+
+}
+
+#leading .profile-icon-container .profile-popup p {
+    padding: 5px 0;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    color: var(--text-color-dark);
+}
+
 
 #content {
     display: flex;
@@ -401,18 +419,21 @@ body {
 
 }
 
+
+.incident-container .table-row .date-and-time {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-end;
+    gap: 8px;
+}
+
 .incident-container .table-row .time {
-    position: absolute;
-    top: 5px;
-    right: 5px;
+    color: rgb(190, 204, 216);
 }
 
 .incident-container .table-row .date {
-    position: absolute;
-    top: 30px;
-    right: 5px;
     color: rgb(190, 204, 216);
-    ;
 }
 
 .incident-container .table-row .tag-container {
@@ -430,25 +451,6 @@ body {
     font-weight: bold;
 }
 
-/* .incident-container .table-row .tag-container .tag:nth-child(1) {
-    color: rgb(197, 194, 194);
-}
-
-.incident-container .table-row .tag-container .tag:nth-child(2) {
-    color: rgb(212, 197, 146);
-}
-
-.incident-container .table-row .tag-container .tag:nth-last-child(3) {
-    color: rgb(161, 192, 197);
-}
-
-.incident-container .table-row .tag-container .tag:nth-last-child(2) {
-    color: rgb(231, 230, 164);
-}
-
-.incident-container .table-row .tag-container .tag:nth-last-child(1) {
-    color: rgb(199, 164, 231);
-} */
 
 .incident-container .table-row .author {
     display: flex;

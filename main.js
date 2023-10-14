@@ -373,7 +373,10 @@ function renderIncidents(data) {
               <span class="caption">${update.update}</span><br>
               <span class="address">${update.address}</span>
           </td>
-          <td><span class="time">${time}</span><span class="date">${update.date}</span></td>
+          <td class="date-and-time">
+              <span class="time">${time}</span>
+              <span class="date">${update.date}</span>
+          </td>
       </tr>
         <tr class="table-row">
             <td class="tag-container">                                
@@ -426,7 +429,10 @@ function renderIncidents(data) {
                   <span class="caption">${update}</span><br>
                   <span class="address">${address}</span>
               </td>
-              <td><span class="time">${time}</span><span class="date">${date}</span></td>
+              <td class="date-and-time">
+                  <span class="time">${time}</span>
+                  <span class="date">${date}</span>
+              </td>
           </tr>
           <tr class="table-row">
               <td class="tag-container">                                
