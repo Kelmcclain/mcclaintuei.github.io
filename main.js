@@ -737,7 +737,6 @@ function editExisitingIncident() {
         updateButtonContainer.style.width = '100%'
         submitButtonisCollapsed = !submitButtonisCollapsed;
       }
-      console.log(container)
       // container.style.background = "#2d3542";
 
       //Get the value of updates count from DOM
@@ -758,6 +757,41 @@ function editExisitingIncident() {
       addressInput.value = address;
       titleInput.value = title;
       updateInput.value = '';
+
+      let currentState = null
+      let currentLevel = null
+      let currentEventTime = null
+
+      tags.forEach(tag => {
+        if (tag === 'reported') {
+          currentState = 'reported'
+        } else if (tag === 'debunked') {
+          currentState = 'debunked'
+        } else if (tag === 'responded') {
+          currentState = 'responded'
+        } else if (tag === 'low') {
+          currentLevel = 'low'
+        } else if (tag === 'medium') {
+          currentLevel = 'medium'
+        } else if (tag === 'high') {
+          currentLevel = 'high'
+        } else if (tag === 'past') {
+          currentEventTime = 'past'
+        } else if (tag === 'active') {
+          currentEventTime = 'active'
+        } else if (tag === 'future') {
+          currentEventTime = 'future'
+        }
+      })
+
+
+
+      changeButtonsState(stateAlertButtons, currentState)
+      changeButtonsState(levelAlertButtons, currentLevel)
+      changeButtonsState(timeAlertButtons, currentEventTime)
+
+    
+
       // Update the selected tags
       const excludedItems = ['active', 'reported', 'medium', 'debunked', 'responded', 'low', 'high', 'past', 'future'];
       selectedTags = tags.filter(tag => !excludedItems.includes(tag)).slice();
@@ -765,6 +799,37 @@ function editExisitingIncident() {
       updateTagsDisplay();
     });
   });
+}
+
+const changeButtonsState = function (targetButton, state) {
+  targetButton.forEach(button => {
+    const parent = button.parentElement;
+    const siblings = parent.querySelectorAll('.alert-btn');
+    siblings.forEach(sibling => {
+      sibling.classList.remove('active');
+    });
+  });
+  targetButton.forEach(activebtn => {
+    if (activebtn.classList.contains(state)) {
+      activebtn.classList.add('active');
+      if (state === 'reported' || state === 'debunked' || state === 'responded') {
+        defaultIncidentState = state
+      } else if (state === 'low' || state === 'medium' || state === 'high') {
+        defaultIncidentLevel = state
+      } else if (state === 'past' || state === 'future') {
+        defaultIncidentTime = state
+      }
+    }
+  })
+  if (state === 'active') {
+    targetButton.forEach((btn, index) => {
+      if (index === 1) {
+        btn.classList.add('active');
+        defaultIncidentTime = state
+
+      }
+    })
+  }
 }
 
 updateButton.addEventListener('click', publishUpdate)
@@ -845,7 +910,13 @@ function resetState() {
   Array.from(elementsWithClassName).forEach(element => {
     element.classList.remove(classNameToSearch);
   });
- 
+
+
+  changeButtonsState(stateAlertButtons, 'reported')
+  changeButtonsState(levelAlertButtons, 'medium')
+  changeButtonsState(timeAlertButtons, 'active')
+
+
 
 }
 
@@ -862,14 +933,14 @@ document.querySelector('#search-item').addEventListener('keyup', (event) => {
   console.log(event.key)
   const searchbox = document.querySelector('#search-item').value.toUpperCase();
   const searchIncidents = document.querySelectorAll('.incident-container');
-  
+
   for (let i = 0; i < searchIncidents.length; i++) {
     let match = searchIncidents[i].getElementsByTagName('span')[0];
-    
+
     if (match) {
       let textValue = match.textContent || match.innerHTML;
       console.log(textValue)
-      
+
       if (textValue.toUpperCase().indexOf(searchbox) > -1) {
         searchIncidents[i].style.display = ""; // Display the matching incident
       } else {
