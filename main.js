@@ -718,12 +718,12 @@ function createIncident() {
 
 
 //handle click event to create new incident
-const submitButton = document.querySelector('.submit-btn')
-const updateButton = document.querySelector('.update-btn')
-const newIncidentTitle = document.querySelector('.new-incident-title')
+const submitButton = document.querySelector('.submit-btn');
+const updateButton = document.querySelector('.update-btn');
+const newIncidentTitle = document.querySelector('.new-incident-title');
 const submitButtonContainer = document.querySelector('.new-incident .submit-btn-container');
 const updateButtonContainer = document.querySelector('.new-incident .update-btn-container');
-submitButton.addEventListener('click', createIncident)
+submitButton.addEventListener('click', createIncident);
 
 
 function editExisitingIncident() {
@@ -734,33 +734,37 @@ function editExisitingIncident() {
       // container.focus();
       if (!submitButtonisCollapsed) {
         submitButtonContainer.style.width = '0px';
-        updateButtonContainer.style.width = '100%'
+        updateButtonContainer.style.width = '100%';
         submitButtonisCollapsed = !submitButtonisCollapsed;
       }
       // container.style.background = "#2d3542";
 
       //Get the value of updates count from DOM
-      const incidentUpdatesCount = Number(container.querySelector('.incident-update-count').innerHTML)
+      const incidentUpdatesCount = Number(container.querySelector('.incident-update-count').innerHTML);
       if (incidentUpdatesCount > 0) {
         const updatesContainer = container.querySelector('.updates-container');
         if (!updatesContainer.classList.contains('show-updates')) {
-          updatesContainer.classList.add('show-updates')
-        }
-      }
+          updatesContainer.classList.add('show-updates');
+        };
+      };
       //Find matching incident from local db
       const { dataset: { incidentId } } = container;
-      matchingIncident = localeStagingData.find((incident) => incident.id === incidentId)
-      const { title, address, tags } = matchingIncident;
-      newIncidentTitle.innerHTML = `Update: ${title}`
+      matchingIncident = localeStagingData.find((incident) => incident.id === incidentId);
+      let { title, address, tags, updates } = matchingIncident;
+
+      if (updates.length > 0){
+        tags = updates[updates.length-1].tags;
+      }
+      newIncidentTitle.innerHTML = `Update: ${title}`;
       // Populate input fields with incident details
-      updateInput.style.border = ''
+      updateInput.style.border = '';
       addressInput.value = address;
       titleInput.value = title;
       updateInput.value = '';
 
-      let currentState = null
-      let currentLevel = null
-      let currentEventTime = null
+      let currentState = null;
+      let currentLevel = null;
+      let currentEventTime = null;
 
       tags.forEach(tag => {
         if (tag === 'reported') {
@@ -784,13 +788,9 @@ function editExisitingIncident() {
         }
       })
 
-
-
-      changeButtonsState(stateAlertButtons, currentState)
-      changeButtonsState(levelAlertButtons, currentLevel)
-      changeButtonsState(timeAlertButtons, currentEventTime)
-
-    
+      changeButtonsState(stateAlertButtons, currentState);
+      changeButtonsState(levelAlertButtons, currentLevel);
+      changeButtonsState(timeAlertButtons, currentEventTime);
 
       // Update the selected tags
       const excludedItems = ['active', 'reported', 'medium', 'debunked', 'responded', 'low', 'high', 'past', 'future'];
@@ -799,7 +799,7 @@ function editExisitingIncident() {
       updateTagsDisplay();
     });
   });
-}
+};
 
 const changeButtonsState = function (targetButton, state) {
   targetButton.forEach(button => {
@@ -825,14 +825,14 @@ const changeButtonsState = function (targetButton, state) {
     targetButton.forEach((btn, index) => {
       if (index === 1) {
         btn.classList.add('active');
-        defaultIncidentTime = state
+        defaultIncidentTime = state;
 
       }
     })
   }
 }
 
-updateButton.addEventListener('click', publishUpdate)
+updateButton.addEventListener('click', publishUpdate);
 function publishUpdate() {
   const updateText = updateInput.value.trim()
 
@@ -852,7 +852,7 @@ function publishUpdate() {
   const time = `${hours}:${minutes}`;
 
 
-  selectedTags.push(defaultIncidentState, defaultIncidentTime, defaultIncidentLevel)
+  selectedTags.push(defaultIncidentState, defaultIncidentTime, defaultIncidentLevel);
   const updateIncident = {
     title: titleInput.value,
     update: updateText,
@@ -885,7 +885,7 @@ function publishUpdate() {
   audioPlayers.forEach((player) => {
     player.remove();
   });
-}
+};
 
 
 function resetState() {
@@ -911,22 +911,18 @@ function resetState() {
     element.classList.remove(classNameToSearch);
   });
 
-
   changeButtonsState(stateAlertButtons, 'reported')
   changeButtonsState(levelAlertButtons, 'medium')
   changeButtonsState(timeAlertButtons, 'active')
-
-
-
-}
+};
 
 document.querySelector('.clear-incident-form').addEventListener('click', resetState)
 document.addEventListener('keydown', (event) => {
   const pressedKey = event.key
   if (pressedKey === "Escape") {
     resetState()
-  }
-})
+  };
+});
 
 document.querySelector('#search-item').addEventListener('keyup', (event) => {
   event.stopPropagation();
@@ -945,8 +941,8 @@ document.querySelector('#search-item').addEventListener('keyup', (event) => {
         searchIncidents[i].style.display = ""; // Display the matching incident
       } else {
         searchIncidents[i].style.display = "none"; // Hide the non-matching incident
-      }
-    }
-  }
-})
+      };
+    };
+  };
+});
 
