@@ -513,8 +513,6 @@ function renderIncidents(data) {
 //Global Variables
 let submitButtonisCollapsed = false;
 let defaultIncidentState = 'reported';
-let defaultIncidentTime = 'active';
-let defaultIncidentLevel = 'medium';
 let matchingIncident = null; // Define it in a higher scope
 
 
@@ -532,34 +530,6 @@ stateAlertButtons.forEach(button => {
   });
 });
 
-const levelAlertButtons = document.querySelectorAll('.level');
-levelAlertButtons.forEach(button => {
-  button.addEventListener('click', () => {
-    const parent = button.parentElement;
-    const siblings = parent.querySelectorAll('.alert-btn');
-    siblings.forEach(sibling => {
-      sibling.classList.remove('active');
-    });
-
-    button.classList.add('active');
-    defaultIncidentLevel = button.innerHTML.toLowerCase()
-
-  });
-});
-
-const timeAlertButtons = document.querySelectorAll('.time');
-timeAlertButtons.forEach(button => {
-  button.addEventListener('click', () => {
-    const parent = button.parentElement;
-    const siblings = parent.querySelectorAll('.alert-btn');
-    siblings.forEach(sibling => {
-      sibling.classList.remove('active');
-    });
-
-    button.classList.add('active');
-    defaultIncidentTime = button.innerHTML.toLowerCase()
-  });
-});
 
 
 // Get references to the select elements and display element
@@ -567,8 +537,8 @@ const tagsSelect = document.getElementById('tags');
 const crimeSelect = document.getElementById('crime');
 const fireSelect = document.getElementById('fire');
 const trafficSelect = document.getElementById('traffic');
-const weatherSelect = document.getElementById('weather');
-const miscSelect = document.getElementById('misc');
+const civil = document.getElementById('civil');
+const utility = document.getElementById('utility');
 const tagsDisplay = document.querySelector('.tags-display');
 
 // Initialize an array to store selected tags
@@ -580,8 +550,8 @@ function updateTags() {
   crimeSelect.addEventListener('change', updateDisplay);
   fireSelect.addEventListener('change', updateDisplay);
   trafficSelect.addEventListener('change', updateDisplay);
-  weatherSelect.addEventListener('change', updateDisplay);
-  miscSelect.addEventListener('change', updateDisplay);
+  civil.addEventListener('change', updateDisplay);
+  utility.addEventListener('change', updateDisplay);
 }
 
 
@@ -682,7 +652,7 @@ function createIncident() {
 
   //initialize tags string to store selected tags
   // const tagsStr = selectedTags
-  selectedTags.push(defaultIncidentState, defaultIncidentTime, defaultIncidentLevel)
+  selectedTags.push(defaultIncidentState)
   //create incident
   const incident = {
     title,
@@ -752,8 +722,8 @@ function editExisitingIncident() {
       matchingIncident = localeStagingData.find((incident) => incident.id === incidentId);
       let { title, address, tags, updates } = matchingIncident;
 
-      if (updates.length > 0){
-        tags = updates[updates.length-1].tags;
+      if (updates.length > 0) {
+        tags = updates[updates.length - 1].tags;
       }
       newIncidentTitle.innerHTML = `Update: ${title}`;
       // Populate input fields with incident details
@@ -763,8 +733,6 @@ function editExisitingIncident() {
       updateInput.value = '';
 
       let currentState = null;
-      let currentLevel = null;
-      let currentEventTime = null;
 
       tags.forEach(tag => {
         if (tag === 'reported') {
@@ -773,27 +741,13 @@ function editExisitingIncident() {
           currentState = 'debunked'
         } else if (tag === 'responded') {
           currentState = 'responded'
-        } else if (tag === 'low') {
-          currentLevel = 'low'
-        } else if (tag === 'medium') {
-          currentLevel = 'medium'
-        } else if (tag === 'high') {
-          currentLevel = 'high'
-        } else if (tag === 'past') {
-          currentEventTime = 'past'
-        } else if (tag === 'active') {
-          currentEventTime = 'active'
-        } else if (tag === 'future') {
-          currentEventTime = 'future'
         }
       })
 
       changeButtonsState(stateAlertButtons, currentState);
-      changeButtonsState(levelAlertButtons, currentLevel);
-      changeButtonsState(timeAlertButtons, currentEventTime);
 
       // Update the selected tags
-      const excludedItems = ['active', 'reported', 'medium', 'debunked', 'responded', 'low', 'high', 'past', 'future'];
+      const excludedItems = ['reported', 'debunked', 'responded'];
       selectedTags = tags.filter(tag => !excludedItems.includes(tag)).slice();
       // Update the UI to reflect the selected tags
       updateTagsDisplay();
@@ -814,10 +768,6 @@ const changeButtonsState = function (targetButton, state) {
       activebtn.classList.add('active');
       if (state === 'reported' || state === 'debunked' || state === 'responded') {
         defaultIncidentState = state
-      } else if (state === 'low' || state === 'medium' || state === 'high') {
-        defaultIncidentLevel = state
-      } else if (state === 'past' || state === 'future') {
-        defaultIncidentTime = state
       }
     }
   })
@@ -852,7 +802,7 @@ function publishUpdate() {
   const time = `${hours}:${minutes}`;
 
 
-  selectedTags.push(defaultIncidentState, defaultIncidentTime, defaultIncidentLevel);
+  selectedTags.push(defaultIncidentState);
   const updateIncident = {
     title: titleInput.value,
     update: updateText,
@@ -912,8 +862,6 @@ function resetState() {
   });
 
   changeButtonsState(stateAlertButtons, 'reported')
-  changeButtonsState(levelAlertButtons, 'medium')
-  changeButtonsState(timeAlertButtons, 'active')
 };
 
 document.querySelector('.clear-incident-form').addEventListener('click', resetState)

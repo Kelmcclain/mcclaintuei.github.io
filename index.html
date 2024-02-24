@@ -22,7 +22,7 @@
             <i class="fa-solid fa-user"></i>
             <div class="profile-popup">
                 <p class="profile">Account <i class="fa-solid fa-user"></i></p>
-                <p  class=" logout">Logout <i class="fa-solid fa-arrow-right-from-bracket"></i></p>
+                <p class=" logout">Logout <i class="fa-solid fa-arrow-right-from-bracket"></i></p>
 
             </div>
         </div>
@@ -83,89 +83,73 @@
                     <span class="tag"></span>
                 </div>
                 <div class="select-tags">
-                    <select id="tags" name="tags">
-                        <option value="">Tags</option>
-                        <option disabled="">──────────</option>
-                        <option value="gun">Gun</option>
-                        <option value="weapon">Other Weapons</option>
-                        <option disabled="">──────────</option>
-                        <option value="injuries">Injuries</option>
-                        <option value="fatalities">Fatalities</option>
-                        <option disabled="">──────────</option>
-                        <option value="commercial">Commercial</option>
-                        <option value="infrustracture">Infrustracture Damage</option>
-
-                    </select>
                     <select id="crime" name="crime">
                         <option value="">Crime</option>
                         <option disabled="">──────────</option>
-                        <option value="assault">Assault</option>
-                        <option value="disturbance">Disturbance</option>
+                        <option value="assault (other deadly)">Assault (Other Deadly)</option>
+                        <option value="bomb">Bomb</option>
+                        <option value="hostages">Hostages</option>
                         <option value="robbery">Robbery</option>
+                        <option value="shots detected">Shots Detected</option>
                         <option value="shooting">Shooting</option>
+                        <option value="stabbing">Stabbing</option>
                         <option value="suspicious">Suspicious</option>
-                        <option value="theft">Theft</option>
-                        <option value="threat">Threats</option>
+                        <option value="threats">Threats</option>
                         <option value="trespass">Trespass</option>
-
-
+                        <option value="vandalism">Vandalism</option>
                     </select>
-                </div>
-                <div class="select-tags">
                     <select id="fire" name="fire">
                         <option value="">Fire</option>
                         <option disabled="">──────────</option>
-                        <option value="fire">Fire</option>
-                        <option value="medical">Medical</option>
-                        <option value="rescue">Rescue</option>
-                        <option disabled="">──────────</option>
                         <option value="explosion">Explosion</option>
-                        <option value="gas">Gas</option>
-                        <option value="smoke">Smoke</option>
                         <option value="hazmat">Hazmat</option>
+                        <option value="outdoor file">Outdoor Fire</option>
+                        <option value="rescue">Rescue</option>
+                        <option value="structure fire">Structure Fire</option>
 
-
+                        <option disabled="">──────────</option>
                     </select>
+
+                </div>
+                <div class="select-tags">
                     <select id="traffic" name="traffic">
                         <option value="">Traffic</option>
                         <option disabled="">──────────</option>
                         <option value="collision">Collision</option>
-                        <option value="closure">Road Closure</option>
-                        <option value="hazard">Road Hazard</option>
-                        <option value="pursuit">Pursuit</option>
+                        <option value="hazard">Hazard</option>
+                        <option value="road closure">Road Closure</option>
                         <option value="transit">Transit Disruption</option>
+
+                    </select>
+                    </select>
+                    <select id="civil" name="civil">
+                        <option value="">Civil</option>
+                        <option disabled="">──────────</option>
+                        <option value="looting">Looting</option>
+                        <option value="peaceful assembly">Peaceful Assembly</option>
+                        <option value="dangerous assembly">Dangerous Assembly</option>
 
                     </select>
                 </div>
                 <div class="select-tags">
-                    <select id="weather" name="weather">
-                        <option value="">Weather</option>
+                    <select id="utility" name="utility">
+                        <option value="">Utility</option>
                         <option disabled="">──────────</option>
-                        <option value="air">Air Quality</option>
-                        <option value="cold">Cold</option>
-                        <option value="earthquake">Earthquake</option>
-                        <option value="flood">Flood</option>
-                        <option value="hail">Hail</option>
-                        <option value="heat">Heat</option>
-                        <option value="landslide">Landslide</option>
-                        <option value="ice-snow">Ice/Snow</option>
-                        <option value="tsunami">Tsunami</option>
-                        <option value="wildfire">Wildfire</option>
-                        <option value="winds">Winds</option>
-
+                        <option value="gas">Gas Leak</option>
+                        <option value="power outage">Power Outage</option>
+                        <option value="weapon damage">Utility Damage</option>
                     </select>
-                    <select id="misc" name="misc">
-                        <option value="">Misc</option>
+                    </select>
+                    <select id="tags" name="tags">
+                        <option value="">Tags</option>
                         <option disabled="">──────────</option>
-                        <option value="bomb">Bomb Scare</option>
-                        <option value="hostage">Hostage Situation</option>
-                        <option value="assembly">Illegal Assembly</option>
-                        <option value="looting">Looting</option>
-                        <option value="suspicious">Suspicious</option>
-                        <option value="police">Police Activity</option>
-                        <option value="protest">Protest</option>
-                        <option value="riot">Rioting</option>
-                        <option value="vandalism">Vandalism</option>
+                        <option value="deadly weapon">Deadly Weapon</option>
+                        <option value="hate crime">Hate Crime</option>
+                        <option value="ijuries">Injuires</option>
+                        <option value="injuries (mass)">Injuires (Mass)</option>
+                        <option value="officer involved">Officer -Involved</option>
+                        <option disabled="">──────────</option>
+                        <option value="correction">Correction</option>
                     </select>
                 </div>
                 <div>
@@ -174,16 +158,7 @@
                         <button class="alert-btn debunked state">Debunked</button>
                         <button class="alert-btn responded state">Responded</button>
                     </div>
-                    <div class="alert-btns">
-                        <button class="alert-btn low level">Low</button>
-                        <button class="alert-btn medium level active">Medium</button>
-                        <button class="alert-btn high level">High</button>
-                    </div>
-                    <div class="alert-btns">
-                        <button class="alert-btn past time">Past</button>
-                        <button class="alert-btn time active">Active</button>
-                        <button class="alert-btn future time">Future</button>
-                    </div>
+                   
                 </div>
                 <div class="alert-btns new-incident">
                     <div class="submit-btn-container"><button class="submit-btn">Create</button></div>
@@ -200,8 +175,8 @@
         <div id="loading-screen">
             <div class="loader"></div>
             <p>Just a moment..</p>
-          </div>
-        
+        </div>
+
     </section>
     <script type="module" src="auth/auth-page.js"></script>
     <script src="https://unpkg.com/scrollreveal"></script>
@@ -209,7 +184,7 @@
     <script type="module" src="main.js"></script>
     <script src="script.js"></script>
 
-      
+
 </body>
 
 
