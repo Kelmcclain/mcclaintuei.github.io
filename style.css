@@ -556,13 +556,13 @@ body {
 
 #new-incident-column .new-incident-title {
     padding: 5px;
-    width: 30px;
+    width: 200px;
     margin-top: 5px;
     margin-left: 5px;
     font-weight: bold;
     font-size: 14px;
     white-space: nowrap;
-    overflow: initial;
+    overflow: hidden;
     text-overflow: ellipsis;
 }
 
