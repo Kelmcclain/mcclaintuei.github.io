@@ -15,6 +15,36 @@
 
 }
 
+#map {
+    height: 100%;
+    width: 100%;
+}
+
+
+    /* Style for Autocomplete prediction list */
+    .pac-container {
+        background-color: rgb(36, 36, 36); /* Background color of the prediction list */
+        z-index: 1000;
+        border-radius: 5px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        border: none;
+    }
+
+    .pac-item {
+        border-bottom: none; /* Border between prediction items */
+        color: #250b0b; /* Text color of prediction items */
+        cursor: pointer;
+    }
+
+    .pac-item:hover {
+        background-color: #323f49; /* Background color on hover */
+    }
+
+    .pac-item-query {
+        font-weight: bold;
+        color: #6ca7e6; /* Text color of the typed text in predictions */
+    }
+
 /* scrollbar on the root <html> or <body> element */
 html::-webkit-scrollbar,
 body::-webkit-scrollbar,
